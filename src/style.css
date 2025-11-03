@@ -1,0 +1,75 @@
+@import "tailwindcss";
+:root {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  cursor: none;
+
+  background-image: url("./assets/bg.png");
+  background-size: cover;
+  background-position: top center; 
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a, 
+button, 
+input, 
+textarea, 
+select,
+[role="button"], /* Jika ada elemen non-tombol yang berperan sbg tombol */
+*:hover {
+  /* Pilihan agresif: atur semua hover ke none */
+  cursor: none !important;
+}
+
+.sparkle {
+  position: fixed;
+  width: 15px;
+  height: 15px;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 1;
+  transform: translate(-50%, -50%);
+  background: white;
+  clip-path: polygon(
+    50% 0%,
+    61% 35%,
+    98% 35%,
+    68% 57%,
+    79% 91%,
+    50% 70%,
+    21% 91%,
+    32% 57%,
+    2% 35%,
+    39% 35%
+  ); /* bentuk star */
+  animation: sparkle-fade 0.6s forwards;
+}
+
+@keyframes sparkle-fade {
+  to {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.5);
+  }
+}
+
+.custom-cursor {
+  width: 32px;
+  height: 32px;
+  position: fixed;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  background: url("./assets/cursor\ pink.svg") no-repeat center center;
+  background-size: contain;
+  z-index: 10000;
+}
