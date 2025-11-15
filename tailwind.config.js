@@ -3,7 +3,9 @@
 module.exports = {
   content: [
     "./index.html",
-    // Pastikan ini mencakup semua file komponen di folder src
+    "./index2.html",
+    "./index3.html",
+    "./index4.html",
     "./src/**/*.{js,ts,jsx,tsx,vue,svelte}",
   ],
   theme: {

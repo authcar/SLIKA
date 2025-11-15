@@ -1,61 +1,19 @@
-import './style.css'
+import './style.css';
 
 const cursor = document.createElement("div");
 cursor.classList.add("custom-cursor");
 document.body.appendChild(cursor);
 
-document.addEventListener("mousemove", (e) => {
-  // Update posisi cursor
-  cursor.style.left = e.clientX + "px";
-  cursor.style.top = e.clientY + "px";
-
-  // Buat sparkle trail
-  const sparkle = document.createElement("div");
-  sparkle.classList.add("sparkle");
-  sparkle.style.left = e.clientX + "px";
-  sparkle.style.top = e.clientY + "px";
-  document.body.appendChild(sparkle);
-
-  setTimeout(() => sparkle.remove(), 600);
-});
-
-const buttons = document.querySelectorAll(".button, .pbutton, .funbutton");
-const clickSound = document.getElementById("clickSound");
-
-buttons.forEach((btn) => {
-  btn.addEventListener("click", () => {
-    clickSound.currentTime = 0;
-    clickSound.play();
-
-    // klik animasi kecil
-    btn.style.transform = "scale(0.9)";
-    setTimeout(() => (btn.style.transform = "scale(1)"), 150);
-
-    // tunggu suara selesai dulu
-    clickSound.onended = () => {
-      // mulai efek transisi
-      document.body.classList.add("fade-out");
-
-      // setelah fade-out selesai, baru pindah halaman
-      setTimeout(() => {
-        window.location.href = btn.dataset.target;
-      }, 500); // durasi fade
-    };
-  });
-});
-
 const videoElement = document.getElementById("webcam-feed");
 const canvas = document.getElementById("pinkCanvas");
 const ctx = canvas.getContext("2d");
-const filterButtons = document.querySelectorAll(".filter-btn");
 
 let currentFilter = "none";
 let pinkActive = false;
 let twilightactive = false;
-let purpleactive =false;
+let purpleactive = false;
 
 
-// Check if the browser supports media devices (webcams)
 if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
   navigator.mediaDevices
     .getUserMedia({ video: true })
@@ -71,20 +29,10 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
   alert("Sorry, your browser does not support webcam access.");
 }
 
-
-//button event
-filterButtons.forEach((button) => {
-  button.addEventListener("click", () => {
-    currentFilter = button.dataset.filter || "none";
-    console.log("Filter chosen:", currentFilter);
-    applyFilter(currentFilter);
-  });
-});
-
 function applyFilter(type) {
-  pinkActive = (type === "pink");
-  twilightactive = (type === "twilight");
-  purpleactive = (type === "2016");
+  pinkActive = type === "pink";
+  twilightactive = type === "twilight";
+  purpleactive = type === "2016";
 
   if (pinkActive || twilightactive || purpleactive) {
     videoElement.style.filter = "none";
@@ -130,6 +78,11 @@ function applyFilter(type) {
 function loopcanvasFilter() {
   if (!pinkActive && !twilightactive && !purpleactive) return;
 
+  if (videoElement.videoWidth === 0 || videoElement.videoHeight === 0) {
+    requestAnimationFrame(loopcanvasFilter);
+    return;
+  }
+
   canvas.width = videoElement.videoWidth;
   canvas.height = videoElement.videoHeight;
 
@@ -149,7 +102,6 @@ function loopcanvasFilter() {
   requestAnimationFrame(loopcanvasFilter);
 }
 
-// === Pink Filter Effect ===
 function applyPink(data) {
   for (let i = 0; i < data.length; i += 4) {
     const r = data[i];
@@ -186,7 +138,7 @@ function applyBlueTwilight(data) {
     // Step 2: Cool teal shift (reduce red, boost green & blue)
     let newR = r1 * 0.75; // reduce warmth
     let newG = g1 * 1.13 + b1 * 0.2; // slight green/blue tint
-    let newB = b1 * 1.20 + g1 * 0.1; // stronger blue component
+    let newB = b1 * 1.2 + g1 * 0.1; // stronger blue component
 
     // Step 3: Gentle contrast curve
     const contrast = 0.92;
@@ -249,9 +201,47 @@ function applypurple(data) {
   }
 }
 
-document.getElementById("nextBtn").addEventListener("click", () => {
-  localStorage.setItem("currentFilter", currentFilter);
-  console.log("Saved filter:", currentFilter);
-  window.location.href = "index3.html";
+
+document.addEventListener("DOMContentLoaded", () => {
+    const savedFilter = localStorage.getItem("currentFilter");
+
+    if (savedFilter && videoElement) { // Tambahkan cek videoElement
+        currentFilter = savedFilter;
+        pinkActive = savedFilter === "pink";
+        twilightactive = savedFilter === "twilight";
+        purpleactive = savedFilter === "2016";
+
+        // Menerapkan solusi penundaan video yang disarankan sebelumnya di sini!
+        videoElement.addEventListener("loadeddata", function runFilter() {
+            applyFilter(savedFilter);
+            videoElement.removeEventListener("loadeddata", runFilter);
+        });
+
+        // Fallback jika loadeddata terlewat atau stream sudah berjalan
+        if (videoElement.readyState >= 2) {
+             applyFilter(savedFilter);
+        }
+    }
 });
 
+// =================================================================
+// Logika Mouse dan Sparkle (Dibiarkan)
+// =================================================================
+
+document.addEventListener("mousemove", (e) => {
+  // Update posisi cursor
+  cursor.style.left = e.clientX + "px";
+  cursor.style.top = e.clientY + "px"; // Buat sparkle trail
+
+  const sparkle = document.createElement("div");
+  sparkle.classList.add("sparkle");
+  sparkle.style.left = e.clientX + "px";
+  sparkle.style.top = e.clientY + "px";
+  document.body.appendChild(sparkle);
+
+  setTimeout(() => sparkle.remove(), 600);
+});
+
+const savedFilter = localStorage.getItem("currentFilter") || "none";
+console.log("Loaded filter:", savedFilter);
+applyFilter(savedFilter);
