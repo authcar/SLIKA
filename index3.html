@@ -44,13 +44,22 @@
                 <div class="frame-wrapper">
                     <img src="./src/assets/frame.png" class="frame"  alt="frame"/>
                     <div id="photobooth-frame">
-                        <video id="webcam-feed" autoplay playsinline ></video>
+                        <video id="videoview" autoplay playsinline ></video>
                         <canvas id="pinkCanvas"></canvas>
+                        <div id="countdown-overlay" class="hidden"></div>
+                        <!-- Capture canvas (hidden) -->
+                        <canvas id="captureCanvas" width="640" height="480" style="display: none;"></canvas>
+                    
                     </div>
+                    
                 </div>
+                <button id="capture-button">Take Picture</button>
+                <section id="images-container"></section> <!-- menampilkan preview foto-foto yang sudah diambil sebelum jadi layout final. -->
             </div>
 
         </div>        
-        <script type="module" src="/src/next.js"></script>
+        <script type="module" src="/src/takephoto.js"></script>
+        <script type="module" src="/src/cursor.js"></script>
+    <script type="module" src="/src/clicksound.js"></script>
     </body>
 </html>

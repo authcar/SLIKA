@@ -121,6 +121,7 @@ select,
   left: 50%;
   transform: translateX(-50%);
   width: 40%; /* sama seperti max-width sebelumnya */
+  position: relative;
 }
 
 .rectangle {
@@ -299,4 +300,59 @@ canvas {
   height: 100%;
   transform: scaleX(-1);
   object-fit: cover;
+}
+
+#capturedcanvas , #videoview {
+  transform: scaleX(-1);
+}
+
+.page {
+  display: none;
+}
+
+.page.active {
+  display: block;
+}
+
+.hidden {
+  display: none !important;
+}
+
+#countdown-overlay {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 120px;
+  font-weight: bold;
+  z-index: 999;
+}
+
+#capture-button {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 12px 24px;
+  background: #ff4fa1;
+  border: none;
+  color: white;
+  font-size: 18px;
+  border-radius: 10px;
+  cursor: pointer;
+  z-index: 1000;
+}
+
+.layout-btn {
+  max-width: 100px; /* atau sesuaikan ukuran yang diinginkan */
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.layout-btn:hover {
+  transform: scale(1.1);
+  filter: drop-shadow(0 0 15px rgba(0, 200, 255, 0.8));
 }

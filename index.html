@@ -3,27 +3,21 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>my-project</title>
+    <title>SLIKA</title>
     <link rel="stylesheet" href="/src/main.css" />
   </head>
 
   <body class="relative">
-    <img
-      class="absolute top-0 left-0 w-full h-full object-cover z-[-2]"
-      src="/bg.png"
-      alt="Main background"
+    <img class="absolute top-0 left-0 w-full h-full object-cover z-[-2]" src="/bg.png"
+    alt="Main background"
     />
     <img
-    class="object-cover absolute z-10"
-    style="max-width: 15%; top: 20px; left: 50%; transform: translateX(-50%); position: absolute;"
-    src="./src/assets/logo-slika.png"
-    alt="logo"
+    class="object-cover absolute z-10" style="max-width: 15%; top: 20px; left: 50%; transform: translateX(-50%); position: absolute;"
+    src="./src/assets/logo-slika.png" alt="logo"
     />
     <img
-    class=" sparklee sparkle1 object-cover absolute z-10"
-    style="max-width: 12%; top: 20px; left: 50%; transform: translateX(-50%); position: absolute;"
-    src="./src/assets/sparkleoverlay1.png"
-    alt="sparkle1"
+    class=" sparklee sparkle1 object-cover absolute z-10" style="max-width: 12%; top: 20px; left: 50%; transform: translateX(-50%); position: absolute;"
+    src="./src/assets/sparkleoverlay1.png" alt="sparkle1"
     />
     <img
     class="sparklee sparkle2 object-cover absolute z-10"
@@ -36,22 +30,36 @@
     src="./src/assets/garis.png"
     alt="garis"
     />
-<div class="rectangle-wrapper">
-  <img
-    src="./src/assets/rectangle-3.png"
-    class="rectangle"
-    alt="rectangle"
-  />
+  
+  <div class="rectangle-wrapper">
+    <img id="ui-rectangle" src="./src/assets/Rectangle 4.png" class="rectangle" alt="rectangle"/>
 
-  <div class="button-container">
-    <img src="./src/assets/button.png" class="button" data-target="index2.html" />
-    <img src="./src/assets/patternedbutton.png" class="pbutton" data-target="index3.html"/>
-    <img src="./src/assets/funbutton.png" class="funbutton" data-target="index4.html" />
+    <div id="step-layout" class="button-container">
+      <img src="./src/assets/button.png" class="button" data-layout="layout2" data-url="index2.html" />
+
+      <img src="./src/assets/patternedbutton.png" class="pbutton" data-layout="layout3" data-url="index2.html"/>
+
+      <img src="./src/assets/funbutton.png" class="funbutton" data-layout="layout6" data-url="index2.html" />
+    </div>
   </div>
 
 <audio id="clickSound" src="./src/assets/fairy.wav"></audio>
-</div>
 
-<script type="module" src="/src/main.js"></script>
+<script type="module" src="/src/cursor.js"></script>
+<script type="module" src="/src/clicksound.js"></script>
+<script>
+  const buttons = document.querySelectorAll("#step-layout img");
+  buttons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const layout = button.dataset.layout;
+      const url = button.dataset.url;
+
+      localStorage.setItem("selectedLayout", layout);
+      console.log("Selected layout:", layout);
+
+      window.location.href = url;
+    });
+  });
+</script>
 </body>
 </html>
