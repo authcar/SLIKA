@@ -8,9 +8,7 @@ const filterButtons = document.querySelectorAll(".filter-btn");
 const countdownBox = document.getElementById("countdown-box");
 
 let currentFilter = "none";
-let pinkActive = false;
-let twilightactive = false;
-let purpleactive = false;
+let filterActive = false;
 
 // Check if the browser supports media devices (webcams)
 if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
@@ -37,53 +35,19 @@ filterButtons.forEach((button) => {
 });
 
 function applyFilter(type) {
-  pinkActive = type === "pink";
-  twilightactive = type === "twilight";
-  purpleactive = type === "2016";
-
-  if (pinkActive || twilightactive || purpleactive) {
+  if (type === "none") {
+    filterActive = false;
+    videoElement.style.display = "block";
+    canvas.style.display = "none";
     videoElement.style.filter = "none";
-    loopcanvasFilter();
   } else {
-    pinkActive = false;
-    twilightactive = false;
-    purpleactive = false;
-
-    switch (type) {
-      case "grayscale":
-        videoElement.style.display = "block";
-        canvas.style.display = "none";
-        videoElement.style.filter = "grayscale(1)";
-        break;
-      case "vintage":
-        videoElement.style.display = "block";
-        canvas.style.display = "none";
-        videoElement.style.filter = "sepia(0.7) contrast(1.1) brightness(1.05)";
-        break;
-      case "dreamy":
-        videoElement.style.display = "block";
-        canvas.style.display = "none";
-        videoElement.style.filter =
-          "brightness(1.2) saturate(1.4) contrast(0.9) hue-rotate(20deg) blur(1.5px)";
-        break;
-      case "2016":
-        videoElement.style.display = "block";
-        canvas.style.display = "none";
-        videoElement.style.filter =
-          "brightness(1.1) contrast(0.9) saturate(1.1) sepia(0.15) hue-rotate(320deg) blur(0.3px)";
-
-        break;
-      default:
-        videoElement.style.display = "block";
-        canvas.style.display = "none";
-        videoElement.style.filter = "none";
-        break;
-    }
+    filterActive = true;
+    loopCanvasFilter();
   }
 }
 
-function loopcanvasFilter() {
-  if (!pinkActive && !twilightactive && !purpleactive) return;
+function loopCanvasFilter() {
+  if (!filterActive) return;
 
   canvas.width = videoElement.videoWidth;
   canvas.height = videoElement.videoHeight;
@@ -92,16 +56,32 @@ function loopcanvasFilter() {
 
   const frame = ctx.getImageData(0, 0, canvas.width, canvas.height);
 
-  if (pinkActive) applyPink(frame.data);
-  if (twilightactive) applyBlueTwilight(frame.data);
-  if (purpleactive) applypurple(frame.data);
+  switch (currentFilter) {
+    case "pink":
+      applyPink(frame.data);
+      break;
+    case "twilight":
+      applyBlueTwilight(frame.data);
+      break;
+    case "2016":
+      applyPurple(frame.data);
+      break;
+    case "grayscale": // ✨ NEW: Now uses canvas instead of CSS filter
+      applyGrayscale(frame.data);
+      break;
+    case "vintage": // ✨ NEW: Now uses canvas instead of CSS filter
+      applyVintage(frame.data);
+      break;
+    case "dreamy": // ✨ NEW: Now uses canvas instead of CSS filter
+      applyDreamy(frame.data);
+      break;
+  }
 
   ctx.putImageData(frame, 0, 0);
-
   canvas.style.display = "block";
   videoElement.style.display = "none";
 
-  requestAnimationFrame(loopcanvasFilter);
+  requestAnimationFrame(loopCanvasFilter);
 }
 
 // === Pink Filter Effect ===
@@ -157,7 +137,7 @@ function applyBlueTwilight(data) {
   }
 }
 
-function applypurple(data) {
+function applyPurple(data) {
   for (let i = 0; i < data.length; i += 4) {
     const r = data[i];
     const g = data[i + 1];
@@ -204,12 +184,85 @@ function applypurple(data) {
   }
 }
 
+function applyGrayscale(data) {
+  for (let i = 0; i < data.length; i += 4) {
+    const r = data[i];
+    const g = data[i + 1];
+    const b = data[i + 2];
+
+    const gray = 0.299 * r + 0.587 * g + 0.114 * b;
+
+    data[i] = gray;
+    data[i + 1] = gray;
+    data[i + 2] = gray;
+  }
+}
+
+function applyVintage(data) {
+  for (let i = 0; i < data.length; i += 4) {
+    let r = data[i];
+    let g = data[i + 1];
+    let b = data[i + 2];
+
+    // Sepia tone matrix
+    let newR = r * 0.9 + g * 0.3 + b * 0.1;
+    let newG = r * 0.2 + g * 0.8 + b * 0.1;
+    let newB = r * 0.1 + g * 0.2 + b * 0.6;
+
+    // Boost brightness & contrast slightly
+    const contrastFactor = 1.1;
+    newR = ((newR - 128) * contrastFactor + 128) * 1.05 + 10;
+    newG = ((newG - 128) * contrastFactor + 128) * 1.05 + 8;
+    newB = ((newB - 128) * contrastFactor + 128) * 0.9;
+
+    data[i] = Math.max(0, Math.min(255, newR));
+    data[i + 1] = Math.max(0, Math.min(255, newG));
+    data[i + 2] = Math.max(0, Math.min(255, newB));
+  }
+}
+
+function applyDreamy(data) {
+  for (let i = 0; i < data.length; i += 4) {
+    let r = data[i];
+    let g = data[i + 1];
+    let b = data[i + 2];
+
+    // Increase brightness
+    const brightness = 1.2;
+    r *= brightness;
+    g *= brightness;
+    b *= brightness;
+
+    // Increase saturation
+    const gray = 0.299 * r + 0.587 * g + 0.114 * b;
+    const saturation = 1.4;
+    r = gray + (r - gray) * saturation;
+    g = gray + (g - gray) * saturation;
+    b = gray + (b - gray) * saturation;
+
+    // Reduce contrast
+    const contrast = 0.9;
+    r = (r - 128) * contrast + 128;
+    g = (g - 128) * contrast + 128;
+    b = (b - 128) * contrast + 128;
+
+    // Warm hue shift (simplified rotation)
+    const hueShift = 20 / 360; // 20 degrees
+    const newR = r * (1 + hueShift * 0.5);
+    const newG = g * (1 + hueShift * 0.3);
+    const newB = b * (1 - hueShift * 0.2);
+
+    // Note: Blur effect can't be replicated in pixel manipulation
+    // You'd need to implement a convolution filter for true blur
+
+    data[i] = Math.max(0, Math.min(255, newR));
+    data[i + 1] = Math.max(0, Math.min(255, newG));
+    data[i + 2] = Math.max(0, Math.min(255, newB));
+  }
+}
+
 document.getElementById("nextBtn").addEventListener("click", () => {
   localStorage.setItem("currentFilter", currentFilter);
   console.log("Saved filter:", currentFilter);
   window.location.href = "index3.html";
 });
-
-
-
-

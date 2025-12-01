@@ -1,22 +1,33 @@
 import "./style.css";
 
+// =======================
+// ELEMENTS
+// =======================
 const videoElement = document.getElementById("videoview");
 const canvas = document.getElementById("pinkCanvas");
 const ctx = canvas.getContext("2d");
+const filterButtons = document.querySelectorAll(".filter-button");
+const countdown = document.getElementById("countdown-overlay");
+const imagecontainer = document.getElementById("images-container");
+const captureCanvas = document.getElementById("captureCanvas");
+const capture = document.getElementById("capture-button");
 
+// =======================
+// GLOBAL STATES
+// =======================
 let currentFilter = "none";
-let pinkActive = false;
-let twilightactive = false;
-let purpleactive = false;
+let filterActive = false;
+let photos = [];
 
+// =======================
+// CAMERA INIT
+// =======================
 if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
   navigator.mediaDevices
     .getUserMedia({ video: true })
-    .then(function (stream) {
-      videoElement.srcObject = stream;
-    })
-    .catch(function (err) {
-      console.error("The following error occurred: " + err);
+    .then((stream) => (videoElement.srcObject = stream))
+    .catch((err) => {
+      console.error("Camera error:", err);
       const frame = document.getElementById("photobooth-frame");
       frame.innerHTML = "<p>Camera access denied or no camera found.</p>";
     });
@@ -24,77 +35,66 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
   alert("Sorry, your browser does not support webcam access.");
 }
 
+// =======================
+// FILTER BUTTON HANDLING
+// =======================
+filterButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    currentFilter = button.dataset.filter || "none";
+    applyFilter(currentFilter);
+  });
+});
+
+// =======================
+// APPLY FILTER
+// =======================
 function applyFilter(type) {
-  pinkActive = type === "pink";
-  twilightactive = type === "twilight";
-  purpleactive = type === "2016";
-
-  if (pinkActive || twilightactive || purpleactive) {
+  if (type === "none") {
+    filterActive = false;
+    videoElement.style.display = "block";
+    canvas.style.display = "none";
     videoElement.style.filter = "none";
-    loopcanvasFilter();
   } else {
-    pinkActive = false;
-    twilightactive = false;
-    purpleactive = false;
-
-    switch (type) {
-      case "grayscale":
-        videoElement.style.display = "block";
-        canvas.style.display = "none";
-        videoElement.style.filter = "grayscale(1)";
-        break;
-      case "vintage":
-        videoElement.style.display = "block";
-        canvas.style.display = "none";
-        videoElement.style.filter = "sepia(0.7) contrast(1.1) brightness(1.05)";
-        break;
-      case "dreamy":
-        videoElement.style.display = "block";
-        canvas.style.display = "none";
-        videoElement.style.filter =
-          "brightness(1.2) saturate(1.4) contrast(0.9) hue-rotate(20deg) blur(1.5px)";
-        break;
-      case "2016":
-        videoElement.style.display = "block";
-        canvas.style.display = "none";
-        videoElement.style.filter =
-          "brightness(1.1) contrast(0.9) saturate(1.1) sepia(0.15) hue-rotate(320deg) blur(0.3px)";
-
-        break;
-      default:
-        videoElement.style.display = "block";
-        canvas.style.display = "none";
-        videoElement.style.filter = "none";
-        break;
-    }
+    filterActive = true;
+    loopCanvasFilter();
   }
 }
 
-function loopcanvasFilter() {
-  if (!pinkActive && !twilightactive && !purpleactive) return;
-
-  if (videoElement.videoWidth === 0 || videoElement.videoHeight === 0) {
-    requestAnimationFrame(loopcanvasFilter);
-    return;
-  }
+function loopCanvasFilter() {
+  if (!filterActive) return;
 
   canvas.width = videoElement.videoWidth;
   canvas.height = videoElement.videoHeight;
 
   ctx.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
-
   const frame = ctx.getImageData(0, 0, canvas.width, canvas.height);
 
-  if (pinkActive) applyPink(frame.data);
-  if (twilightactive) applyBlueTwilight(frame.data);
-  if (purpleactive) applypurple(frame.data);
+  switch (currentFilter) {
+    case "pink":
+      applyPink(frame.data);
+      break;
+    case "twilight":
+      applyBlueTwilight(frame.data);
+      break;
+    case "2016":
+      applyPurple(frame.data);
+      break;
+    case "grayscale":
+      applyGrayscale(frame.data);
+      break;
+    case "vintage":
+      applyVintage(frame.data);
+      break;
+    case "dreamy":
+      applyDreamy(frame.data);
+      break;
+  }
 
   ctx.putImageData(frame, 0, 0);
-
   canvas.style.display = "block";
   videoElement.style.display = "none";
 
-  requestAnimationFrame(loopcanvasFilter);
+  requestAnimationFrame(loopCanvasFilter);
 }
 
 function applyPink(data) {
@@ -149,7 +149,7 @@ function applyBlueTwilight(data) {
   }
 }
 
-function applypurple(data) {
+function applyPurple(data) {
   for (let i = 0; i < data.length; i += 4) {
     const r = data[i];
     const g = data[i + 1];
@@ -196,54 +196,113 @@ function applypurple(data) {
   }
 }
 
-document.addEventListener("DOMContentLoaded", () => {
+function applyGrayscale(data) {
+  for (let i = 0; i < data.length; i += 4) {
+    const r = data[i];
+    const g = data[i + 1];
+    const b = data[i + 2];
 
-  photos = []; //KOSONGKAN ARRAY LAGI
-  if (imagecontainer) {
-    // Cek dulu apakah element-nya ada (untuk avoid error)
-    imagecontainer.innerHTML = ""; //Hapus semua isi HTML di dalam element
+    const gray = 0.299 * r + 0.587 * g + 0.114 * b;
+
+    data[i] = gray;
+    data[i + 1] = gray;
+    data[i + 2] = gray;
   }
+}
+
+function applyVintage(data) {
+  for (let i = 0; i < data.length; i += 4) {
+    let r = data[i];
+    let g = data[i + 1];
+    let b = data[i + 2];
+
+    // Sepia tone matrix
+    let newR = r * 0.9 + g * 0.3 + b * 0.1;
+    let newG = r * 0.2 + g * 0.8 + b * 0.1;
+    let newB = r * 0.1 + g * 0.2 + b * 0.6;
+
+    // Boost brightness & contrast slightly
+    const contrastFactor = 1.1;
+    newR = ((newR - 128) * contrastFactor + 128) * 1.05 + 10;
+    newG = ((newG - 128) * contrastFactor + 128) * 1.05 + 8;
+    newB = ((newB - 128) * contrastFactor + 128) * 0.9;
+
+    data[i] = Math.max(0, Math.min(255, newR));
+    data[i + 1] = Math.max(0, Math.min(255, newG));
+    data[i + 2] = Math.max(0, Math.min(255, newB));
+  }
+}
+
+function applyDreamy(data) {
+  for (let i = 0; i < data.length; i += 4) {
+    let r = data[i];
+    let g = data[i + 1];
+    let b = data[i + 2];
+
+    // Increase brightness
+    const brightness = 1.2;
+    r *= brightness;
+    g *= brightness;
+    b *= brightness;
+
+    // Increase saturation
+    const gray = 0.299 * r + 0.587 * g + 0.114 * b;
+    const saturation = 1.4;
+    r = gray + (r - gray) * saturation;
+    g = gray + (g - gray) * saturation;
+    b = gray + (b - gray) * saturation;
+
+    // Reduce contrast
+    const contrast = 0.9;
+    r = (r - 128) * contrast + 128;
+    g = (g - 128) * contrast + 128;
+    b = (b - 128) * contrast + 128;
+
+    // Warm hue shift (simplified rotation)
+    const hueShift = 20 / 360; // 20 degrees
+    const newR = r * (1 + hueShift * 0.5);
+    const newG = g * (1 + hueShift * 0.3);
+    const newB = b * (1 - hueShift * 0.2);
+
+    // Note: Blur effect can't be replicated in pixel manipulation
+    // You'd need to implement a convolution filter for true blur
+
+    data[i] = Math.max(0, Math.min(255, newR));
+    data[i + 1] = Math.max(0, Math.min(255, newG));
+    data[i + 2] = Math.max(0, Math.min(255, newB));
+  }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  imagecontainer.innerHTML = "";
+  photos = [];
 
   const savedFilter = localStorage.getItem("currentFilter");
 
-  if (savedFilter && videoElement) {
-    // Tambahkan cek videoElement
+  if (savedFilter) {
     currentFilter = savedFilter;
-    pinkActive = savedFilter === "pink";
-    twilightactive = savedFilter === "twilight";
-    purpleactive = savedFilter === "2016";
 
-    // Menerapkan solusi penundaan video yang disarankan sebelumnya di sini!
     videoElement.addEventListener("loadeddata", function runFilter() {
       applyFilter(savedFilter);
       videoElement.removeEventListener("loadeddata", runFilter);
     });
 
-    // Fallback jika loadeddata terlewat atau stream sudah berjalan
     if (videoElement.readyState >= 2) {
       applyFilter(savedFilter);
     }
   }
 });
 
+// =======================
+// LAYOUT SETTINGS
+// =======================
 const selectedLayout = localStorage.getItem("selectedLayout");
-console.log("Layout user:", selectedLayout);
+const layoutCount = { layout2: 2, layout3: 3, layout6: 6 };
+const neededPhotos = layoutCount[selectedLayout] || 1;
 
-const layoutCount = {
-  layout2: 2,
-  layout3: 3,
-  layout6: 6,
-};
-
-const neededPhotos = layoutCount[selectedLayout] || 1; // default 3 foto
-let photos = [];
-
-const countdown = document.getElementById("countdown-overlay");
-const video = document.getElementById("videoview");
-const captureCanvas = document.getElementById("captureCanvas");
-const capture = document.getElementById("capture-button");
-const imagecontainer = document.getElementById("images-container"); //menampilkan preview foto-foto yang sudah diambil sebelum jadi layout final.
-
+// =======================
+// CAPTURE LOGIC
+// =======================
 capture.addEventListener("click", startPhotoSequence);
 
 function startPhotoSequence() {
@@ -251,20 +310,11 @@ function startPhotoSequence() {
 }
 
 function takePhoto() {
-  const ctx = captureCanvas.getContext("2d");
+  const ctx2 = captureCanvas.getContext("2d");
   let counter = 3;
 
   countdown.classList.remove("hidden");
   countdown.textContent = counter;
-
-  let source;
-  if (pinkActive || twilightactive || purpleactive) {
-    source = canvas;
-  } else {
-    source = video;
-  }
-
-  ctx.drawImage(source, 0, 0, captureCanvas.width, captureCanvas.height);
 
   const interval = setInterval(() => {
     counter--;
@@ -274,37 +324,28 @@ function takePhoto() {
       clearInterval(interval);
       countdown.textContent = "Smile!";
 
-      // Delay sedikit biar icon flash terlihat
       setTimeout(() => {
         countdown.classList.add("hidden");
+
         captureCanvas.width = 320;
         captureCanvas.height = 240;
-        let source = video;
-        if (pinkActive || twilightactive || purpleactive) {
-          source = canvas;
-        }
 
-        ctx.save();
+        const source = filterActive ? canvas : videoElement;
 
-        ctx.translate(captureCanvas.width, 0);
+        ctx2.save();
+        ctx2.translate(captureCanvas.width, 0);
+        ctx2.scale(-1, 1);
 
-        ctx.scale(-1, 1);
-
-        ctx.drawImage(source, 0, 0, captureCanvas.width, captureCanvas.height);
+        ctx2.drawImage(source, 0, 0, captureCanvas.width, captureCanvas.height);
 
         const imageData = captureCanvas.toDataURL("image/png");
-
         photos.push(imageData);
 
-        const capturedimage = new Image();
-        capturedimage.src = imageData;
-
-        console.log("Foto ke-" + photos.length + " berhasil diambil!");
-
-        imagecontainer.prepend(capturedimage);
+        const img = new Image();
+        img.src = imageData;
+        imagecontainer.prepend(img);
 
         if (photos.length < neededPhotos) {
-          // Take next photo after a short delay
           setTimeout(takePhoto, 1000);
         } else {
           generateFinalLayout();
@@ -314,9 +355,12 @@ function takePhoto() {
   }, 1000);
 }
 
+// =======================
+// FINAL LAYOUT
+// =======================
 function generateFinalLayout() {
   const finalCanvas = document.createElement("canvas");
-  const ctx = finalCanvas.getContext("2d");
+  const ctx3 = finalCanvas.getContext("2d");
 
   const layoutImg = new Image();
   layoutImg.src = `/src/assets/${selectedLayout}.png`;
@@ -325,14 +369,11 @@ function generateFinalLayout() {
     finalCanvas.width = layoutImg.width;
     finalCanvas.height = layoutImg.height;
 
-    ctx.drawImage(layoutImg, 0, 0); //background template photobooth
+    ctx3.drawImage(layoutImg, 0, 0);
+    placePhotos(ctx3, selectedLayout, photos);
 
-    placePhotos(ctx, selectedLayout, photos); //menggambar foto di posisi tertentu.
-
-    // convert jadi image
     const finalImage = finalCanvas.toDataURL("image/png");
 
-    // tampilkan ke user
     document.body.innerHTML = `
       <img src="${finalImage}" style="width:100%">
       <a href="${finalImage}" download="photobooth.png">
@@ -342,31 +383,32 @@ function generateFinalLayout() {
   };
 }
 
-const Layout = localStorage.getItem("selectedLayout");
-
+// =======================
+// PLACE PHOTOS
+// =======================
 function placePhotos(ctx, layout, photos) {
-  if (layout === "layout2") {
-    ctx.drawImage(makeImg(photos[0]), 100, 300, 600, 800); //foto ke-, posisi x,y , ukuran width,height
-    ctx.drawImage(makeImg(photos[1]), 100, 1150, 600, 800);
-    ctx.drawImage(makeImg(photos[2]), 750, 700, 600, 800);
-  }
-
-  if (layout === "layout3") {
+  if (layout === "layout2" || layout === "layout3") {
     ctx.drawImage(makeImg(photos[0]), 100, 300, 600, 800);
     ctx.drawImage(makeImg(photos[1]), 100, 1150, 600, 800);
     ctx.drawImage(makeImg(photos[2]), 750, 700, 600, 800);
   }
 
   if (layout === "layout6") {
-    ctx.drawImage(makeImg(photos[0]), 150, 300, 300, 400);
-    ctx.drawImage(makeImg(photos[1]), 500, 300, 300, 400);
-    ctx.drawImage(makeImg(photos[2]), 850, 300, 300, 400);
-    ctx.drawImage(makeImg(photos[3]), 150, 750, 300, 400);
-    ctx.drawImage(makeImg(photos[4]), 500, 750, 300, 400);
-    ctx.drawImage(makeImg(photos[5]), 850, 750, 300, 400);
-    ctx.drawImage(makeImg(photos[6]), 150, 1200, 300, 400);
-    ctx.drawImage(makeImg(photos[7]), 500, 1200, 300, 400);
-    ctx.drawImage(makeImg(photos[8]), 850, 1200, 300, 400);
+    const W = 350,
+      H = 450;
+    const x1 = 200,
+      x2 = 600;
+    const startY = 250,
+      gap = 500;
+
+    ctx.drawImage(makeImg(photos[0]), x1, startY, W, H);
+    ctx.drawImage(makeImg(photos[1]), x2, startY, W, H);
+
+    ctx.drawImage(makeImg(photos[2]), x1, startY + gap, W, H);
+    ctx.drawImage(makeImg(photos[3]), x2, startY + gap, W, H);
+
+    ctx.drawImage(makeImg(photos[4]), x1, startY + 2 * gap, W, H);
+    ctx.drawImage(makeImg(photos[5]), x2, startY + 2 * gap, W, H);
   }
 }
 
