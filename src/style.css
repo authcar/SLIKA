@@ -264,6 +264,24 @@ select,
   overflow: hidden;
   z-index: 1;
 }
+.heart {
+  position: absolute;
+  width: 150px;
+  top: 110px;
+  left: 50px;
+}
+.bubble{
+  position: relative;
+  width: 70px;
+  top: 150px;
+  left: 1300px;
+}
+.smileyface{
+  position: absolute;
+  width: 110px;
+  top: 540px;
+  left: 100px;
+}
 .star {
   position: absolute;
   animation: shake 2s ease-in-out infinite;
@@ -333,15 +351,9 @@ canvas {
 
 #capture-button {
   position: absolute;
-  bottom: 20px;
+  bottom: 80px;
   left: 50%;
   transform: translateX(-50%);
-  padding: 12px 24px;
-  background: #ff4fa1;
-  border: none;
-  color: white;
-  font-size: 18px;
-  border-radius: 10px;
   cursor: pointer;
   z-index: 1000;
 }

@@ -1,65 +1,103 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>my-project</title>
-        <link rel="stylesheet" href="/src/style.css" />
-    </head>
-    <body class="relative">
-        <img
-        class="absolute top-0 left-0 w-full h-full object-cover z-[-2]"
-        src="/bg.png"
-        alt="Main background"/>
-        <img
-        class="object-cover absolute z-10"
-        style="max-width: 15%; top: 20px; left: 50%; transform: translateX(-50%); position: absolute;"
-        src="./src/assets/logo-slika.png"
-        alt="logo"
-        />
-        <img
-        class=" sparklee sparkle1 object-cover absolute z-10"
-        style="max-width: 12%; top: 20px; left: 50%; transform: translateX(-50%); position: absolute;"
-        src="./src/assets/sparkleoverlay1.png"
-        alt="sparkle1"
-        />
-        <img
-        class="sparklee sparkle2 object-cover absolute z-10"
-        style="max-width: 12%; top: 20px; left: 50%; transform: translateX(-50%); position: absolute;"
-        src="./src/assets/sparkleoverlay2.png"
-        alt="sparkle2"
-        />
-        <img
-        class="absolute w-full object-cover z-0"
-        src="./src/assets/garis.png"
-        alt="garis"
-        />
-        <div class="page-wrapper">
-            <img src="./src/assets/bgsparkle1.png" class="sparklebg1">
-            <img src="./src/assets/bgsparkle2.png" class="sparklebg2">
-            <img class="star star-pink" src="./src/assets/pinkstar.png" >
-            <img class="star star-yellow" src="./src/assets/yellowstar.png">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>my-project</title>
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body class="relative">
+    <img
+      class="absolute top-0 left-0 w-full h-full object-cover z-[-2]"
+      src="/bg.png"
+      alt="Main background"
+    />
+    <img
+      class="object-cover absolute z-10"
+      style="
+        max-width: 15%;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        position: absolute;
+      "
+      src="./src/assets/logo-slika.png"
+      alt="logo"
+    />
+    <img
+      class="sparklee sparkle1 object-cover absolute z-10"
+      style="
+        max-width: 12%;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        position: absolute;
+      "
+      src="./src/assets/sparkleoverlay1.png"
+      alt="sparkle1"
+    />
+    <img
+      class="sparklee sparkle2 object-cover absolute z-10"
+      style="
+        max-width: 12%;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        position: absolute;
+      "
+      src="./src/assets/sparkleoverlay2.png"
+      alt="sparkle2"
+    />
+    <img
+      class="absolute w-full object-cover z-0"
+      src="./src/assets/garis.png"
+      alt="garis"
+    />
+    <div class="page-wrapper">
+      <img src="./src/assets/bgsparkle1.png" class="sparklebg1" />
+      <img src="./src/assets/bgsparkle2.png" class="sparklebg2" />
 
-            <div class="konten">
-                <div class="frame-wrapper">
-                    <img src="./src/assets/frame.png" class="frame"  alt="frame"/>
-                    <div id="photobooth-frame">
-                        <video id="videoview" autoplay playsinline ></video>
-                        <canvas id="pinkCanvas"></canvas>
-                        <div id="countdown-overlay" class="hidden"></div>
-                        <!-- Capture canvas (hidden) -->
-                        <canvas id="captureCanvas" width="640" height="480" style="display: none;"></canvas>
-                    
-                    </div>
-                    
-                </div>
-                <button id="capture-button">Take Picture</button>
-                <section id="images-container"></section> <!-- menampilkan preview foto-foto yang sudah diambil sebelum jadi layout final. -->
-            </div>
+      <div class="konten">
+        <div class="frame-wrapper">
+          <img src="./src/assets/frame.png" class="frame" alt="frame" />
+          <div id="photobooth-frame">
+            <video id="videoview" autoplay playsinline></video>
+            <canvas id="pinkCanvas"></canvas>
+            <div id="countdown-overlay" class="hidden"></div>
+            <!-- Capture canvas (hidden) -->
+            <canvas
+              id="captureCanvas"
+              width="640"
+              height="480"
+              style="display: none"
+            ></canvas>
+          </div>
+        </div>
+        <img
+          id="capture-button"
+          src="./src/assets/take.png"
+          style="width: 120px; cursor: pointer"
+        />
+        <div id="actionButtons" class="hidden">
+          <img
+            id="retake-button"
+            src="./src/assets/button retake.png"
+            style="width: 120px; cursor: pointer; margin-right: 20px"
+          />
+          <img
+            id="confirm-button"
+            src="./src/assets/button confirm.png"
+            alt="Confirm"
+            style="width: 120px; cursor: pointer"
+          />
 
-        </div>        
-        <script type="module" src="/src/takephoto.js"></script>
-        <script type="module" src="/src/cursor.js"></script>
+        </div>
+        <section id="images-container"></section>
+        <!-- menampilkan preview foto-foto yang sudah diambil sebelum jadi layout final. -->
+      </div>
+    </div>
+    <script type="module" src="/src/takephoto.js"></script>
+    <script type="module" src="/src/cursor.js"></script>
     <script type="module" src="/src/clicksound.js"></script>
-    </body>
+  </body>
 </html>

@@ -11,6 +11,9 @@ const countdown = document.getElementById("countdown-overlay");
 const imagecontainer = document.getElementById("images-container");
 const captureCanvas = document.getElementById("captureCanvas");
 const capture = document.getElementById("capture-button");
+const actionButtons = document.getElementById("actionButtons");
+const retakeButton = document.getElementById("retake-button");
+const confirmButton = document.getElementById("confirm-button");
 
 // =======================
 // GLOBAL STATES
@@ -299,6 +302,7 @@ document.addEventListener("DOMContentLoaded", () => {
 const selectedLayout = localStorage.getItem("selectedLayout");
 const layoutCount = { layout2: 2, layout3: 3, layout6: 6 };
 const neededPhotos = layoutCount[selectedLayout] || 1;
+let isTakingPhotos = false;
 
 // =======================
 // CAPTURE LOGIC
@@ -306,6 +310,9 @@ const neededPhotos = layoutCount[selectedLayout] || 1;
 capture.addEventListener("click", startPhotoSequence);
 
 function startPhotoSequence() {
+  if (isTakingPhotos) return;
+  isTakingPhotos = true;
+  capture.disabled = true;
   takePhoto();
 }
 
@@ -374,12 +381,9 @@ function generateFinalLayout() {
 
     const finalImage = finalCanvas.toDataURL("image/png");
 
-    document.body.innerHTML = `
-      <img src="${finalImage}" style="width:100%">
-      <a href="${finalImage}" download="photobooth.png">
-        <button>Download Foto</button>
-      </a>
-    `;
+    localStorage.setItem("finalPhoto", finalImage);
+
+    actionButtons.classList.remove("hidden");
   };
 }
 
@@ -417,3 +421,15 @@ function makeImg(data) {
   img.src = data;
   return img;
 }
+
+retakeButton.addEventListener("click", () => {
+  photos = [];
+  imagecontainer.innerHTML = "";
+  actionButtons.classList.add("hidden");
+  isTakingPhotos = false;       
+  capture.disabled = false;
+});
+
+confirmButton.addEventListener("click", () => {
+  window.location.href = "index4.html";
+});
