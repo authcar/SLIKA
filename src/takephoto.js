@@ -11,9 +11,11 @@ const countdown = document.getElementById("countdown-overlay");
 const imagecontainer = document.getElementById("images-container");
 const captureCanvas = document.getElementById("captureCanvas");
 const capture = document.getElementById("capture-button");
-const actionButtons = document.getElementById("actionButtons");
 const retakeButton = document.getElementById("retake-button");
 const confirmButton = document.getElementById("confirm-button");
+
+retakeButton.style.display = "none";
+confirmButton.style.display = "none";
 
 // =======================
 // GLOBAL STATES
@@ -356,6 +358,9 @@ function takePhoto() {
           setTimeout(takePhoto, 1000);
         } else {
           generateFinalLayout();
+          retakeButton.style.display = "block";
+          confirmButton.style.display = "block";
+          capture.style.display = "none";
         }
       }, 300);
     }
@@ -382,8 +387,6 @@ function generateFinalLayout() {
     const finalImage = finalCanvas.toDataURL("image/png");
 
     localStorage.setItem("finalPhoto", finalImage);
-
-    actionButtons.classList.remove("hidden");
   };
 }
 
@@ -425,8 +428,10 @@ function makeImg(data) {
 retakeButton.addEventListener("click", () => {
   photos = [];
   imagecontainer.innerHTML = "";
-  actionButtons.classList.add("hidden");
-  isTakingPhotos = false;       
+  retakeButton.style.display = "none";
+  confirmButton.style.display = "none";
+  capture.style.display = "block";
+  isTakingPhotos = false;
   capture.disabled = false;
 });
 

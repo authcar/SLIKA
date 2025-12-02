@@ -1,87 +1,140 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>my-project</title>
-        <link rel="stylesheet" href="/src/main.css" />
-    </head>
-    <body class="relative">
-        <img
-        class="absolute top-0 left-0 w-full h-full object-cover z-[-2]"
-        src="/bg.png"
-        alt="Main background"/>
-        
-        <img
-        class="object-cover absolute z-10"
-        style="max-width: 15%; top: 20px; left: 50%; transform: translateX(-50%); position: absolute;"
-        src="./src/assets/logo-slika.png"
-        alt="logo"
-        />
-        <img
-        class=" sparklee sparkle1 object-cover absolute z-10"
-        style="max-width: 12%; top: 20px; left: 50%; transform: translateX(-50%); position: absolute;"
-        src="./src/assets/sparkleoverlay1.png"
-        alt="sparkle1"
-        />
-        <img
-        class="sparklee sparkle2 object-cover absolute z-10"
-        style="max-width: 12%; top: 20px; left: 50%; transform: translateX(-50%); position: absolute;"
-        src="./src/assets/sparkleoverlay2.png"
-        alt="sparkle2"
-        />
-        <img
-        class="absolute w-full object-cover z-0"
-        src="./src/assets/garis.png"
-        alt="garis"
-        />
-        <div class="page-wrapper">
-            <img src="./src/assets/smileyface.png" class="smileyface"/>
-            <img src="./src/assets/bubble.png" class="bubble"/>
-            <img src="./src/assets/bubble.png" class="bubble" style="width: 37px; top: 400px;"/>
-            <img src="./src/assets/heart.png" class="heart"/>
-            <img src="./src/assets/bgsparkle1.png" class="sparklebg1">
-            <img src="./src/assets/bgsparkle2.png" class="sparklebg2">
-            <img class="star star-pink" src="./src/assets/pinkstar.png" >
-            <img class="star star-yellow" src="./src/assets/yellowstar.png">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>my-project</title>
+    <link rel="stylesheet" href="/src/main.css" />
+  </head>
+  <body class="relative">
+    <img
+      class="absolute top-0 left-0 w-full h-full object-cover z-[-2]"
+      src="/bg.png"
+      alt="Main background"
+    />
 
-            <div class="konten">
-                <div class="frame-wrapper">
-                    <img src="./src/assets/frame.png" class="frame"  alt="frame"/>
-                    <div id="photobooth-frame">
-                        <video id="webcam-feed" autoplay playsinline></video>
-                        <canvas id="pinkCanvas"></canvas>
-                    </div>
-                </div>
-            
-                <div class="filter-container">
-                    <img src="./src/assets/Filters.png" class="filter-label" style="max-width: 120px;">
-                   
-                    <img src="./src/assets/Frame 2.png" class="ui-filter buttonfilter-ui filter-btn"data-filter="vintage" >
-                    <img src="./src/assets/Frame 3.png" class="ui-filter buttonfilter-ui filter-btn" data-filter="twilight">
-                    <img src="./src/assets/Frame 4.png" class="ui-filter buttonfilter-ui filter-btn" data-filter="pink">
-                    <img src="./src/assets/Frame 5.png" class="ui-filter buttonfilter-ui filter-btn" data-filter="dreamy">
-                    <img src="./src/assets/Frame 6.png" class="ui-filter buttonfilter-ui filter-btn" data-filter="2016">
-                    <img src="./src/assets/Frame 7.png" class="ui-filter buttonfilter-ui filter-btn" data-filter="grayscale">
-                    <img src="./src/assets/next.png" class="buttonfilter-ui" id="nextBtn" style="max-width: 100px;"> 
-                       
-                </div>
-                
-            </div>
+    <img
+      class="object-cover absolute z-10"
+      style="
+        max-width: 15%;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        position: absolute;
+      "
+      src="./src/assets/logo-slika.png"
+      alt="logo"
+      onclick="window.location.href='index.html'"
+    />
+    <img
+      class="sparklee sparkle1 object-cover absolute z-10"
+      style="
+        max-width: 12%;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        position: absolute;
+      "
+      src="./src/assets/sparkleoverlay1.png"
+      alt="sparkle1"
+    />
+    <img
+      class="sparklee sparkle2 object-cover absolute z-10"
+      style="
+        max-width: 12%;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        position: absolute;
+      "
+      src="./src/assets/sparkleoverlay2.png"
+      alt="sparkle2"
+    />
+    <img
+      class="absolute w-full object-cover z-0"
+      src="./src/assets/garis.png"
+      alt="garis"
+    />
+    <div class="page-wrapper">
+      <img src="./src/assets/smileyface.png" class="smileyface" />
+      <img src="./src/assets/bubble.png" class="bubble" />
+      <img
+        src="./src/assets/bubble.png"
+        class="bubble"
+        style="width: 37px; top: 400px"
+      />
+      <img src="./src/assets/heart.png" class="heart" />
+      <img src="./src/assets/bgsparkle1.png" class="sparklebg1" />
+      <img src="./src/assets/bgsparkle2.png" class="sparklebg2" />
+      <img class="star star-pink" src="./src/assets/pinkstar.png" />
+      <img class="star star-yellow" src="./src/assets/yellowstar.png" />
 
+      <div class="konten">
+        <div class="frame-wrapper">
+          <img src="./src/assets/frame.png" class="frame" alt="frame" />
+          <div id="photobooth-frame">
+            <video id="webcam-feed" autoplay playsinline></video>
+            <canvas id="pinkCanvas"></canvas>
+          </div>
         </div>
-        <script>
-        // Saat halaman selesai dimuat
-        window.addEventListener("load", () => {
+
+        <div class="filter-container">
+          <img
+            src="./src/assets/Filters.png"
+            class="filter-label"
+            style="max-width: 120px"
+          />
+
+          <img
+            src="./src/assets/Frame 2.png"
+            class="ui-filter buttonfilter-ui filter-btn"
+            data-filter="vintage"
+          />
+          <img
+            src="./src/assets/Frame 3.png"
+            class="ui-filter buttonfilter-ui filter-btn"
+            data-filter="twilight"
+          />
+          <img
+            src="./src/assets/Frame 4.png"
+            class="ui-filter buttonfilter-ui filter-btn"
+            data-filter="pink"
+          />
+          <img
+            src="./src/assets/Frame 5.png"
+            class="ui-filter buttonfilter-ui filter-btn"
+            data-filter="dreamy"
+          />
+          <img
+            src="./src/assets/Frame 6.png"
+            class="ui-filter buttonfilter-ui filter-btn"
+            data-filter="2016"
+          />
+          <img
+            src="./src/assets/Frame 7.png"
+            class="ui-filter buttonfilter-ui filter-btn"
+            data-filter="grayscale"
+          />
+          <img
+            src="./src/assets/next.png"
+            class="buttonfilter-ui"
+            id="nextBtn"
+            style="max-width: 100px"
+          />
+        </div>
+      </div>
+    </div>
+    <script>
+      // Saat halaman selesai dimuat
+      window.addEventListener("load", () => {
         const page = document.querySelector(".page-transition");
         setTimeout(() => {
-            page.classList.add("show");
+          page.classList.add("show");
         }, 50); // kecil delay supaya transisi kelihatan
-        });
-        </script>
-        <script type="module" src="/src/videoview.js"></script>
-        <script type="module" src="/src/cursor.js"></script>
-        <script type="module" src="/src/clicksound.js"></script>
-
-    </body>
+      });
+    </script>
+    <script type="module" src="/src/videoview.js"></script>
+    <script type="module" src="/src/cursor.js"></script>
+    <script type="module" src="/src/clicksound.js"></script>
+  </body>
 </html>

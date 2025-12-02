@@ -252,6 +252,8 @@ select,
   transform: scale(1.1);
   filter: drop-shadow(0 0 15px rgba(0, 200, 255, 0.8));
 }
+
+
 .konten {
   position: absolute;
   display: flex;
@@ -349,11 +351,26 @@ canvas {
   z-index: 999;
 }
 
-#capture-button {
+#capture-button{
   position: absolute;
   bottom: 80px;
   left: 50%;
   transform: translateX(-50%);
+  cursor: pointer;
+  z-index: 1000;
+}
+
+#retake-button {
+  position: absolute;
+  bottom: 80px;
+  left: 300px;
+  cursor: pointer;
+  z-index: 1000;
+}
+#confirm-button {
+  position: absolute;
+  bottom: 80px;
+  right: 770px;
   cursor: pointer;
   z-index: 1000;
 }

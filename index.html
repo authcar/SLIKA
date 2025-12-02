@@ -5,61 +5,106 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>SLIKA</title>
     <link rel="stylesheet" href="/src/main.css" />
+    <link rel="icon" href="/src/assets/icooon.png" type="image/png" />
   </head>
 
   <body class="relative">
-    <img class="absolute top-0 left-0 w-full h-full object-cover z-[-2]" src="/bg.png"
-    alt="Main background"
+    <img
+      class="absolute top-0 left-0 w-full h-full object-cover z-[-2]"
+      src="/bg.png"
+      alt="Main background"
     />
     <img
-    class="object-cover absolute z-10" style="max-width: 15%; top: 20px; left: 50%; transform: translateX(-50%); position: absolute;"
-    src="./src/assets/logo-slika.png" alt="logo"
+      class="object-cover absolute z-10"
+      style="
+        max-width: 15%;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        position: absolute;
+      "
+      src="./src/assets/logo-slika.png"
+      alt="logo"
     />
     <img
-    class=" sparklee sparkle1 object-cover absolute z-10" style="max-width: 12%; top: 20px; left: 50%; transform: translateX(-50%); position: absolute;"
-    src="./src/assets/sparkleoverlay1.png" alt="sparkle1"
+      class="sparklee sparkle1 object-cover absolute z-10"
+      style="
+        max-width: 12%;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        position: absolute;
+      "
+      src="./src/assets/sparkleoverlay1.png"
+      alt="sparkle1"
     />
     <img
-    class="sparklee sparkle2 object-cover absolute z-10"
-    style="max-width: 12%; top: 20px; left: 50%; transform: translateX(-50%); position: absolute;"
-    src="./src/assets/sparkleoverlay2.png"
-    alt="sparkle2"
+      class="sparklee sparkle2 object-cover absolute z-10"
+      style="
+        max-width: 12%;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        position: absolute;
+      "
+      src="./src/assets/sparkleoverlay2.png"
+      alt="sparkle2"
     />
     <img
-    class="absolute w-full object-cover z-0"
-    src="./src/assets/garis.png"
-    alt="garis"
+      class="absolute w-full object-cover z-0"
+      src="./src/assets/garis.png"
+      alt="garis"
     />
-  
-  <div class="rectangle-wrapper">
-    <img id="ui-rectangle" src="./src/assets/Rectangle 4.png" class="rectangle" alt="rectangle"/>
 
-    <div id="step-layout" class="button-container">
-      <img src="./src/assets/button.png" class="button" data-layout="layout2" data-url="index2.html" />
+    <div class="rectangle-wrapper">
+      <img
+        id="ui-rectangle"
+        src="./src/assets/Rectangle 4.png"
+        class="rectangle"
+        alt="rectangle"
+      />
 
-      <img src="./src/assets/patternedbutton.png" class="pbutton" data-layout="layout3" data-url="index2.html"/>
+      <div id="step-layout" class="button-container">
+        <img
+          src="./src/assets/button.png"
+          class="button"
+          data-layout="layout2"
+          data-url="index2.html"
+        />
 
-      <img src="./src/assets/funbutton.png" class="funbutton" data-layout="layout6" data-url="index2.html" />
+        <img
+          src="./src/assets/patternedbutton.png"
+          class="pbutton"
+          data-layout="layout3"
+          data-url="index2.html"
+        />
+
+        <img
+          src="./src/assets/funbutton.png"
+          class="funbutton"
+          data-layout="layout6"
+          data-url="index2.html"
+        />
+      </div>
     </div>
-  </div>
 
-<audio id="clickSound" src="./src/assets/fairy.wav"></audio>
+    <audio id="clickSound" src="./src/assets/fairy.wav"></audio>
 
-<script type="module" src="/src/cursor.js"></script>
-<script type="module" src="/src/clicksound.js"></script>
-<script>
-  const buttons = document.querySelectorAll("#step-layout img");
-  buttons.forEach((button) => {
-    button.addEventListener("click", () => {
-      const layout = button.dataset.layout;
-      const url = button.dataset.url;
+    <script type="module" src="/src/cursor.js"></script>
+    <script type="module" src="/src/clicksound.js"></script>
+    <script>
+      const buttons = document.querySelectorAll("#step-layout img");
+      buttons.forEach((button) => {
+        button.addEventListener("click", () => {
+          const layout = button.dataset.layout;
+          const url = button.dataset.url;
 
-      localStorage.setItem("selectedLayout", layout);
-      console.log("Selected layout:", layout);
+          localStorage.setItem("selectedLayout", layout);
+          console.log("Selected layout:", layout);
 
-      window.location.href = url;
-    });
-  });
-</script>
-</body>
+          window.location.href = url;
+        });
+      });
+    </script>
+  </body>
 </html>
