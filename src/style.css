@@ -253,7 +253,6 @@ select,
   filter: drop-shadow(0 0 15px rgba(0, 200, 255, 0.8));
 }
 
-
 .konten {
   position: absolute;
   display: flex;
@@ -272,13 +271,13 @@ select,
   top: 110px;
   left: 50px;
 }
-.bubble{
+.bubble {
   position: relative;
   width: 70px;
   top: 150px;
   left: 1300px;
 }
-.smileyface{
+.smileyface {
   position: absolute;
   width: 110px;
   top: 540px;
@@ -322,7 +321,8 @@ canvas {
   object-fit: cover;
 }
 
-#capturedcanvas , #videoview {
+#capturedcanvas,
+#videoview {
   transform: scaleX(-1);
 }
 
@@ -340,8 +340,10 @@ canvas {
 
 #countdown-overlay {
   position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   color: white;
   display: flex;
   align-items: center;
@@ -351,7 +353,7 @@ canvas {
   z-index: 999;
 }
 
-#capture-button{
+#capture-button {
   position: absolute;
   bottom: 80px;
   left: 50%;
@@ -384,4 +386,47 @@ canvas {
 .layout-btn:hover {
   transform: scale(1.1);
   filter: drop-shadow(0 0 15px rgba(0, 200, 255, 0.8));
+}
+
+.sticker-list {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto; /* bisa discroll secara horizontal */
+  white-space: nowrap;
+  padding: 10px;
+  width: 350px; /* sesuaikan */
+  margin-bottom: 10px; /* beri jarak dari frame */
+  scrollbar-width: thin; /* firefox */
+}
+
+.stikel {
+  width: 70px;
+  height: auto;
+  flex-shrink: 0; /* supaya tidak mengecil */
+}
+
+.slider-wrapper {
+  position: absolute;
+  width: 60px; /* sesuaikan */
+  height: 300px; /* tinggi slider */
+}
+
+.slider-track {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 100%;
+  width: 20px; /* atau auto kalau PNG sudah pas */
+  pointer-events: none; /* biar gambar track tidak menghalangi drag */
+}
+
+.slider-thumb {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px; /* sesuai gambar kotakmu */
+  height: auto;
+  cursor: grab;
 }

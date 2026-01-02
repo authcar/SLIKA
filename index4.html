@@ -1,39 +1,101 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>my-project</title>
-        <link rel="stylesheet" href="/src/main.css" />
-    </head>
-    <body class="relative">
-        <img
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SLIKA</title>
+    <link rel="stylesheet" href="/src/style.css" />
+    <link rel="icon" href="/src/assets/icooon.png" type="image/png" />
+  </head>
+  <body class="relative">
+    <img
       class="absolute top-0 left-0 w-full h-full object-cover z-[-2]"
       src="/bg.png"
-      alt="Main background"/>
-    <img
-    class="object-cover absolute z-10"
-    style="max-width: 15%; top: 20px; left: 50%; transform: translateX(-50%); position: absolute;"
-    src="./src/assets/logo-slika.png"
-    alt="logo"
+      alt="Main background"
     />
     <img
-    class=" sparklee sparkle1 object-cover absolute z-10"
-    style="max-width: 12%; top: 20px; left: 50%; transform: translateX(-50%); position: absolute;"
-    src="./src/assets/sparkleoverlay1.png"
-    alt="sparkle1"
+      class="object-cover absolute z-10"
+      style="
+        max-width: 15%;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        position: absolute;
+      "
+      src="./src/assets/logo-slika.png"
+      alt="logo"
+      onclick="window.location.href='index.html'"
     />
     <img
-    class="sparklee sparkle2 object-cover absolute z-10"
-    style="max-width: 12%; top: 20px; left: 50%; transform: translateX(-50%); position: absolute;"
-    src="./src/assets/sparkleoverlay2.png"
-    alt="sparkle2"
+      class="sparklee sparkle1 object-cover absolute z-10"
+      style="
+        max-width: 12%;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        position: absolute;
+      "
+      src="./src/assets/sparkleoverlay1.png"
+      alt="sparkle1"
     />
     <img
-    class="absolute w-full object-cover z-0"
-    src="./src/assets/garis.png"
-    alt="garis"
+      class="sparklee sparkle2 object-cover absolute z-10"
+      style="
+        max-width: 12%;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        position: absolute;
+      "
+      src="./src/assets/sparkleoverlay2.png"
+      alt="sparkle2"
     />
+    <img
+      class="absolute w-full object-cover z-0"
+      src="./src/assets/garis.png"
+      alt="garis"
+    />
+    <div class="page-wrapper">
+      <div class="konten">
+        <!-- FRAME STICKER -->
+        <div
+          class="frame-wrapper"
+          style="position: relative; width: 300px; left: -250px"
+        >
+          <img src="./src/assets/framesticker.png" />
+          <img
+            src="./src/assets/STICKERS.png"
+            style="width: 180px; left: -20px; top: 30px; position: absolute"
+          />
+          <img
+            src="./src/assets/restart button.png"
+            class="buttonfilter-ui"
+            style="width: 120px"
+          />
+        <img src="./src/assets/button save.png" class="buttonfilter-ui" style="width: 120px;"/>
+        <canvas id="finalCanvas" width="1080" height="1350"></canvas>
+          <div class="sticker-list">
+            <img src="./src/assets/stickers/ribbon red.png" class="stikel" />
+            <div class="slider-wrapper">
+              <img
+                src="/src/assets/slider-track.png"
+                class="slider-track"
+                style="width: 20px"
+              />
+              <img
+                src="/src/assets/slider-thumb.png"
+                class="slider-thumb"
+                style="width: 36.64px"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <script type="module" src="/src/main.js"></script>
-    </body>
+    <script type="module" src="/src/cursor.js"></script>
+    <script type="module" src="/src/clicksound.js"></script>
+    <script type="module" src="/src/slider.js"></script>
+  </body>
 </html>
