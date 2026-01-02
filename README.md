@@ -28,6 +28,11 @@ This is a fully personal project — designed and built **entirely from scratch*
 ## 🚀 Live Demo
 
 Coming soon!  
+---
+
+## 🤝 Contributions by Friend
+
+Special thanks to Stephanie Wijaya who supported this project by contributed ideas to the name SLIKA 
 
 ---
 
@@ -42,3 +47,4 @@ cd slika-photobooth
 
 # Start with any local server (example)
 npx live-server
+
