@@ -20,8 +20,10 @@ confirmButton.style.display = "none";
 // =======================
 // GLOBAL STATES
 // =======================
+let finalImageData = null;
 let currentFilter = "none";
 let filterActive = false;
+confirmButton.disabled = true;
 let photos = [];
 
 // =======================
@@ -352,7 +354,7 @@ function takePhoto() {
 
         const img = new Image();
         img.src = imageData;
-        imagecontainer.prepend(img);
+        imagecontainer.append(img);
 
         if (photos.length < neededPhotos) {
           setTimeout(takePhoto, 1000);
@@ -370,34 +372,84 @@ function takePhoto() {
 // =======================
 // FINAL LAYOUT
 // =======================
-function generateFinalLayout() {
+async function generateFinalLayout() {
+  console.log("Memulai proses penggabungan foto..."); // Debugging
   const finalCanvas = document.createElement("canvas");
   const ctx3 = finalCanvas.getContext("2d");
 
   const layoutImg = new Image();
-  layoutImg.src = `/src/assets/${selectedLayout}.png`;
+  // Pastikan path ini benar-benar mengarah ke file kamu
+  // Ganti baris layoutImg.src yang lama dengan ini:
+  layoutImg.src = `/assets/${selectedLayout}.png`;
 
-  layoutImg.onload = () => {
-    finalCanvas.width = layoutImg.width;
-    finalCanvas.height = layoutImg.height;
+  layoutImg.onload = async () => {
+    try {
+      // 1. Atur ukuran canvas sesuai ukuran asli file layout.png kamu
+      finalCanvas.width = layoutImg.width;
+      finalCanvas.height = layoutImg.height;
 
-    ctx3.drawImage(layoutImg, 0, 0);
-    placePhotos(ctx3, selectedLayout, photos);
+      // 2. Gambar background layoutnya dulu
+      ctx3.drawImage(layoutImg, 0, 0);
 
-    const finalImage = finalCanvas.toDataURL("image/png");
+      // 3. Ambil semua foto dari array dan ubah jadi elemen Image
+      const loadedPhotos = await Promise.all(photos.map((p) => makeImg(p)));
 
-    localStorage.setItem("finalPhoto", finalImage);
+      // 4. Tempelkan foto-foto tersebut ke atas layout
+      placePhotos(ctx3, selectedLayout, loadedPhotos);
+
+      // 5. SELESAI! Simpan hasilnya
+      finalImageData = finalCanvas.toDataURL("image/png");
+      localStorage.setItem("finalPhoto", finalImageData);
+
+      confirmButton.disabled = false; // Tombol confirm sekarang bisa diklik
+      console.log("Proses selesai! Kamu bisa download sekarang.");
+    } catch (error) {
+      console.error("Gagal menggambar layout:", error);
+    }
   };
+
+  layoutImg.onerror = () => {
+    console.error("File tidak ditemukan di: " + layoutImg.src);
+    alert("Error: File layout tidak ditemukan. Cek folder assets!");
+  };
+}
+
+function downloadFinalImage() {
+  console.log("Status finalImageData:", finalImageData ? "Tersedia" : "Kosong");
+
+  if (!finalImageData) {
+    // Jika kosong, coba paksa generate ulang
+    if (photos.length >= neededPhotos) {
+      alert("Sedang memproses ulang, mohon tunggu sebentar...");
+      generateFinalLayout();
+    } else {
+      alert("Foto belum lengkap!");
+    }
+    return;
+  }
+
+  const link = document.createElement("a");
+  link.href = finalImageData;
+  link.download = "photobooth.png";
+  document.body.appendChild(link); // Penting untuk beberapa browser
+  link.click();
+  document.body.removeChild(link);
 }
 
 // =======================
 // PLACE PHOTOS
 // =======================
-function placePhotos(ctx, layout, photos) {
-  if (layout === "layout2" || layout === "layout3") {
-    ctx.drawImage(makeImg(photos[0]), 100, 300, 600, 800);
-    ctx.drawImage(makeImg(photos[1]), 100, 1150, 600, 800);
-    ctx.drawImage(makeImg(photos[2]), 750, 700, 600, 800);
+
+function placePhotos(ctx, layout, loadedPhotos) {
+  if (layout === "layout2") {
+    ctx.drawImage(loadedPhotos[0], 100, 300, 600, 800); // x, y, width, height
+    ctx.drawImage(loadedPhotos[1], 100, 1150, 600, 800);
+  }
+
+  if (layout === "layout3") {
+    ctx.drawImage(loadedPhotos[0], 100, 300, 600, 800);
+    ctx.drawImage(loadedPhotos[1], 100, 1150, 600, 800);
+    ctx.drawImage(loadedPhotos[2], 750, 700, 600, 800);
   }
 
   if (layout === "layout6") {
@@ -408,21 +460,24 @@ function placePhotos(ctx, layout, photos) {
     const startY = 250,
       gap = 500;
 
-    ctx.drawImage(makeImg(photos[0]), x1, startY, W, H);
-    ctx.drawImage(makeImg(photos[1]), x2, startY, W, H);
+    ctx.drawImage(loadedPhotos[0], x1, startY, W, H);
+    ctx.drawImage(loadedPhotos[1], x2, startY, W, H);
 
-    ctx.drawImage(makeImg(photos[2]), x1, startY + gap, W, H);
-    ctx.drawImage(makeImg(photos[3]), x2, startY + gap, W, H);
+    ctx.drawImage(loadedPhotos[2], x1, startY + gap, W, H);
+    ctx.drawImage(loadedPhotos[3], x2, startY + gap, W, H);
 
-    ctx.drawImage(makeImg(photos[4]), x1, startY + 2 * gap, W, H);
-    ctx.drawImage(makeImg(photos[5]), x2, startY + 2 * gap, W, H);
+    ctx.drawImage(loadedPhotos[4], x1, startY + 2 * gap, W, H);
+    ctx.drawImage(loadedPhotos[5], x2, startY + 2 * gap, W, H);
   }
 }
 
 function makeImg(data) {
-  const img = new Image();
-  img.src = data;
-  return img;
+  // dataURL to Image object
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.onload = () => resolve(img);
+    img.src = data;
+  });
 }
 
 retakeButton.addEventListener("click", () => {
@@ -436,5 +491,5 @@ retakeButton.addEventListener("click", () => {
 });
 
 confirmButton.addEventListener("click", () => {
-  window.location.href = "index4.html";
+  downloadFinalImage();
 });
