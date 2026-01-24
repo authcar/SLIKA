@@ -304,7 +304,7 @@ document.addEventListener("DOMContentLoaded", () => {
 // LAYOUT SETTINGS
 // =======================
 const selectedLayout = localStorage.getItem("selectedLayout");
-const layoutCount = { layout2: 2, layout3: 3, layout6: 6 };
+const layoutCount = { layout2: 2, layout3: 3, layout4: 4 };
 const neededPhotos = layoutCount[selectedLayout] || 1;
 let isTakingPhotos = false;
 
@@ -389,13 +389,14 @@ async function generateFinalLayout() {
       finalCanvas.height = layoutImg.height;
 
       // 2. Gambar background layoutnya dulu
-      ctx3.drawImage(layoutImg, 0, 0);
 
       // 3. Ambil semua foto dari array dan ubah jadi elemen Image
       const loadedPhotos = await Promise.all(photos.map((p) => makeImg(p)));
 
       // 4. Tempelkan foto-foto tersebut ke atas layout
       placePhotos(ctx3, selectedLayout, loadedPhotos);
+
+      ctx3.drawImage(layoutImg, 0, 0);
 
       // 5. SELESAI! Simpan hasilnya
       finalImageData = finalCanvas.toDataURL("image/png");
@@ -442,32 +443,51 @@ function downloadFinalImage() {
 
 function placePhotos(ctx, layout, loadedPhotos) {
   if (layout === "layout2") {
-    ctx.drawImage(loadedPhotos[0], 100, 300, 600, 800); // x, y, width, height
-    ctx.drawImage(loadedPhotos[1], 100, 1150, 600, 800);
+    const H = 1200;
+
+    const img1 = loadedPhotos[0];
+    const W1 = H * (img1.width / img1.height);
+    ctx.drawImage(img1, 50, 100, W1, H);
+
+    const img2 = loadedPhotos[1];
+    const W2 = H * (img2.width / img2.height);
+    ctx.drawImage(img2, 50, 1300, W2, H);
   }
 
   if (layout === "layout3") {
-    ctx.drawImage(loadedPhotos[0], 100, 300, 600, 800);
-    ctx.drawImage(loadedPhotos[1], 100, 1150, 600, 800);
-    ctx.drawImage(loadedPhotos[2], 750, 700, 600, 800);
+    const H = 870;
+
+    const img1 = loadedPhotos[0];
+    const W1 = H * (img1.width / img1.height);
+    ctx.drawImage(img1, 50, 100, W1, H);
+
+    const img2 = loadedPhotos[1];
+    const W2 = H * (img2.width / img2.height);
+    ctx.drawImage(img2, 50, 970, W2, H); //
+
+    const img3 = loadedPhotos[2];
+    const W3 = H * (img3.width / img3.height);
+    ctx.drawImage(img3, 50, 1820, W3, H);
   }
 
-  if (layout === "layout6") {
-    const W = 350,
-      H = 450;
-    const x1 = 200,
-      x2 = 600;
-    const startY = 250,
-      gap = 500;
+  if (layout === "layout4") {
+    const H = 670;
 
-    ctx.drawImage(loadedPhotos[0], x1, startY, W, H);
-    ctx.drawImage(loadedPhotos[1], x2, startY, W, H);
+    const img1 = loadedPhotos[0];
+    const W1 = H * (img1.width / img1.height);
+    ctx.drawImage(img1, 50, 100, W1, H);
 
-    ctx.drawImage(loadedPhotos[2], x1, startY + gap, W, H);
-    ctx.drawImage(loadedPhotos[3], x2, startY + gap, W, H);
+    const img2 = loadedPhotos[1];
+    const W2 = H * (img2.width / img2.height);
+    ctx.drawImage(img2, 50, 770, W2, H); //
 
-    ctx.drawImage(loadedPhotos[4], x1, startY + 2 * gap, W, H);
-    ctx.drawImage(loadedPhotos[5], x2, startY + 2 * gap, W, H);
+    const img3 = loadedPhotos[2];
+    const W3 = H * (img3.width / img3.height);
+    ctx.drawImage(img3, 50, 1340, W3, H);
+
+    const img4 = loadedPhotos[3];
+    const W4 = H * (img4.width / img4.height);
+    ctx.drawImage(img4, 50, 2010, W4, H);
   }
 }
 

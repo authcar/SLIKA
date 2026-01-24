@@ -430,3 +430,34 @@ canvas {
   height: auto;
   cursor: grab;
 }
+
+.frame-list {
+  position: absolute;
+  top: 90px;        /* SESUAIIN sama bolongan framesticker */
+  left: 40px;
+  width: 220px;
+  height: 320px;
+
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+
+  overflow-y: auto;
+}
+
+.frame-option {
+  width: 100%;
+  cursor: pointer;
+  border-radius: 6px;
+  border: 2px solid transparent;
+  transition: 0.2s;
+}
+
+.frame-option:hover {
+  transform: scale(1.05);
+}
+
+.frame-option.selected {
+  border-color: #d946ef; /* pink-ish */
+}
+
