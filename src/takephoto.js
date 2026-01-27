@@ -354,6 +354,7 @@ function takePhoto() {
 
         const img = new Image();
         img.src = imageData;
+
         imagecontainer.append(img);
 
         if (photos.length < neededPhotos) {
@@ -378,9 +379,8 @@ async function generateFinalLayout() {
   const ctx3 = finalCanvas.getContext("2d");
 
   const layoutImg = new Image();
-  // Pastikan path ini benar-benar mengarah ke file kamu
-  // Ganti baris layoutImg.src yang lama dengan ini:
-  layoutImg.src = `/assets/${selectedLayout}.png`;
+  // Pastikan path sesuai dengan struktur folder kamu
+  layoutImg.src = `/assets/${selectedLayout}.png`; //untuk
 
   layoutImg.onload = async () => {
     try {
@@ -388,15 +388,12 @@ async function generateFinalLayout() {
       finalCanvas.width = layoutImg.width;
       finalCanvas.height = layoutImg.height;
 
-      // 2. Gambar background layoutnya dulu
-
       // 3. Ambil semua foto dari array dan ubah jadi elemen Image
       const loadedPhotos = await Promise.all(photos.map((p) => makeImg(p)));
 
-      // 4. Tempelkan foto-foto tersebut ke atas layout
-      placePhotos(ctx3, selectedLayout, loadedPhotos);
+      placePhotos(ctx3, selectedLayout, loadedPhotos); // tempatkan foto sesuai layout
 
-      ctx3.drawImage(layoutImg, 0, 0);
+      ctx3.drawImage(layoutImg, 0, 0); // untuk menggambar layout di atas foto
 
       // 5. SELESAI! Simpan hasilnya
       finalImageData = finalCanvas.toDataURL("image/png");

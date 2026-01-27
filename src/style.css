@@ -461,3 +461,10 @@ canvas {
   border-color: #d946ef; /* pink-ish */
 }
 
+#images-container img {
+  width: 220px;
+  height: auto;      /* biar tidak gepeng */
+  border-radius: 10px;
+  margin: 5px;
+}
+
