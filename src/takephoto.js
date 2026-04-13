@@ -338,8 +338,8 @@ function takePhoto() {
       setTimeout(() => {
         countdown.classList.add("hidden");
 
-        captureCanvas.width = 320;
-        captureCanvas.height = 240;
+        captureCanvas.width = 960;
+        captureCanvas.height = 720;
 
         const source = filterActive ? canvas : videoElement;
 
@@ -469,22 +469,25 @@ function placePhotos(ctx, layout, loadedPhotos) {
 
   if (layout === "layout4") {
     const H = 670;
+    const gap = 40;
+    const startY = 40;
+    const slotW = 960;
 
     const img1 = loadedPhotos[0];
     const W1 = H * (img1.width / img1.height);
-    ctx.drawImage(img1, 50, 100, W1, H);
+    ctx.drawImage(img1, 50, startY, W1, H); // y = 40
 
     const img2 = loadedPhotos[1];
     const W2 = H * (img2.width / img2.height);
-    ctx.drawImage(img2, 50, 770, W2, H); //
+    ctx.drawImage(img2, 50, startY + (H + gap), W2, H); // y = 750
 
     const img3 = loadedPhotos[2];
     const W3 = H * (img3.width / img3.height);
-    ctx.drawImage(img3, 50, 1340, W3, H);
+    ctx.drawImage(img3, 50, startY + (H + gap) * 2, W3, H); // y = 1460
 
     const img4 = loadedPhotos[3];
     const W4 = H * (img4.width / img4.height);
-    ctx.drawImage(img4, 50, 2010, W4, H);
+    ctx.drawImage(img4, 50, startY + (H + gap) * 3, W4, H); // y = 2170
   }
 }
 

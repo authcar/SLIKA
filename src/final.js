@@ -67,9 +67,9 @@ document.addEventListener("DOMContentLoaded", () => {
     ctx.save(); // simpan state canvas
     ctx.translate(canvas.width, 0); // geser titik awal ke kanan
     ctx.scale(-1, 1); // flip horizontal (mirror)
-    ctx.drawImage(basePhotoImg, 0, 0, canvas.width, canvas.height);// balikin state biar ga pengaruh gambar lain
+    ctx.drawImage(basePhotoImg, 0, 0, canvas.width, canvas.height); // balikin state biar ga pengaruh gambar lain
+    ctx.restore();
   }
-
 
   // ============================
   // FUNCTION: Draw Foto + Frame
