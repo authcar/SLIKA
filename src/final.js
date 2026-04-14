@@ -2,7 +2,13 @@ document.addEventListener("DOMContentLoaded", () => {
   const canvas = document.getElementById("finalCanvas");
   const ctx = canvas.getContext("2d");
 
-  const frameOptions = document.querySelectorAll(".frame-option");
+  const FRAME_DESIGNS = [
+    { label: "Floral", src: "./src/assets/frames/frame-floral.png" },
+    { label: "Pastel", src: "./src/assets/frames/frame-pastel.png" },
+    { label: "Vintage", src: "./src/assets/frames/frame-vintage.png" },
+    { label: "Minimal", src: "./src/assets/frames/frame-minimal.png" },
+  ];
+
   const saveButton = document.querySelector(
     'img[src="./src/assets/button save.png"]',
   );
@@ -30,33 +36,86 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Draw foto pertama kali (tanpa frame)
     drawPhotoToCanvas();
+    buildFramePicker();
   };
   basePhotoImg.src = finalImage;
 
   // Disable tombol save dulu
   disableSaveButton();
 
-  // ============================
-  // CLICK FRAME → REAL-TIME PREVIEW
-  // ============================
-  frameOptions.forEach((frameOption) => {
-    frameOption.addEventListener("click", () => {
-      // Remove selected dari semua
-      frameOptions.forEach((f) => f.classList.remove("selected"));
+  function buildFramePicker() {
+    // Cari container yang sudah ada di HTML, atau buat baru
+    let pickerContainer = document.getElementById("frame-picker");
 
-      // Add selected ke yang diklik
-      frameOption.classList.add("selected");
+    if (!pickerContainer) {
+      // Buat container otomatis kalau belum ada di HTML
+      pickerContainer = document.createElement("div");
+      pickerContainer.id = "frame-picker";
+      pickerContainer.style.cssText = `
+        display: flex;
+        gap: 12px;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin: 16px 0;
+      `;
+      // Sisipkan sebelum canvas
+      canvas.parentElement.insertBefore(pickerContainer, canvas);
+    }
 
-      // Simpan frame yang dipilih
-      selectedFrameSrc = frameOption.src;
+    pickerContainer.innerHTML = ""; // reset kalau dipanggil ulang
 
-      // LANGSUNG RENDER FOTO + FRAME
-      drawPhotoWithFrame();
+    FRAME_DESIGNS.forEach(({ label, src }) => {
+      const wrapper = document.createElement("div");
+      wrapper.style.cssText = `
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        cursor: pointer;
+        gap: 4px;
+      `;
 
-      // Enable tombol save
-      enableSaveButton();
+      const thumb = document.createElement("img");
+      thumb.src = src;
+      thumb.alt = label;
+      thumb.style.cssText = `
+        width: 70px;
+        height: 70px;
+        object-fit: cover;
+        border-radius: 8px;
+        border: 3px solid transparent;
+        transition: border-color 0.2s, transform 0.15s;
+      `;
+
+      const lbl = document.createElement("span");
+      lbl.textContent = label;
+      lbl.style.cssText = `
+        font-size: 11px;
+        color: #fff;
+        font-family: sans-serif;
+      `;
+
+      wrapper.appendChild(thumb);
+      wrapper.appendChild(lbl);
+
+      wrapper.addEventListener("click", () => {
+        // Hapus selected dari semua thumb
+        pickerContainer.querySelectorAll("img").forEach((img) => {
+          img.style.borderColor = "transparent";
+          img.style.transform = "scale(1)";
+        });
+
+        // Tandai yang dipilih
+        thumb.style.borderColor = "#ff85b3";
+        thumb.style.transform = "scale(1.08)";
+
+        selectedFrameSrc = src;
+        drawPhotoWithFrame();
+        enableSaveButton();
+      });
+
+      pickerContainer.appendChild(wrapper);
     });
-  });
+  }
 
   // ============================
   // FUNCTION: Draw Foto Aja
@@ -113,15 +172,22 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // Download hasil akhir dari canvas
-    const finalResult = canvas.toDataURL("image/png");
-    const link = document.createElement("a");
-    link.href = finalResult;
-    link.download = `slika-photobooth-${Date.now()}.png`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    const frameImg = new Image();
+    frameImg.onload = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.drawImage(basePhotoImg, 0, 0, canvas.width, canvas.height);
+      ctx.drawImage(frameImg, 0, 0, canvas.width, canvas.height);
 
-    console.log("✅ Foto berhasil didownload!");
+      const finalResult = canvas.toDataURL("image/png");
+      const link = document.createElement("a");
+      link.href = finalResult;
+      link.download = `slika-photobooth-${Date.now()}.png`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      console.log("✅ Foto berhasil didownload!");
+    };
+    frameImg.src = selectedFrameSrc;
   });
 
   // ============================

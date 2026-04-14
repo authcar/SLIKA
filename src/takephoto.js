@@ -452,42 +452,48 @@ function placePhotos(ctx, layout, loadedPhotos) {
   }
 
   if (layout === "layout3") {
-    const H = 870;
+    // Sesuai frame-floral.png (1280 x 2880)
+    // Kotak 1: x:78, y:77,  w:1137, h:689
+    // Kotak 2: x:78, y:838, w:1137, h:689
+    // Kotak 3: x:78, y:1600, w:1137, h:689
 
-    const img1 = loadedPhotos[0];
-    const W1 = H * (img1.width / img1.height);
-    ctx.drawImage(img1, 50, 100, W1, H);
+    const slots = [
+      { x: 78, y: 77, w: 1137, h: 689 },
+      { x: 78, y: 838, w: 1137, h: 689 },
+      { x: 78, y: 1600, w: 1137, h: 689 },
+    ];
 
-    const img2 = loadedPhotos[1];
-    const W2 = H * (img2.width / img2.height);
-    ctx.drawImage(img2, 50, 970, W2, H); //
+    // Set canvas sesuai ukuran frame
+    ctx.canvas.width = 1280;
+    ctx.canvas.height = 2880;
 
-    const img3 = loadedPhotos[2];
-    const W3 = H * (img3.width / img3.height);
-    ctx.drawImage(img3, 50, 1820, W3, H);
+    // Gambar foto tepat di tiap slot
+    slots.forEach((slot, i) => {
+      ctx.drawImage(loadedPhotos[i], slot.x, slot.y, slot.w, slot.h);
+    });
   }
 
   if (layout === "layout4") {
-    const H = 670;
+    const paddingX = 50;
     const gap = 40;
     const startY = 40;
-    const slotW = 960;
+    const H = 670;
 
     const img1 = loadedPhotos[0];
-    const W1 = H * (img1.width / img1.height);
-    ctx.drawImage(img1, 50, startY, W1, H); // y = 40
+    const photoW = H * (img1.width / img1.height);
 
-    const img2 = loadedPhotos[1];
-    const W2 = H * (img2.width / img2.height);
-    ctx.drawImage(img2, 50, startY + (H + gap), W2, H); // y = 750
+    // Resize canvas sesuai konten
+    ctx.canvas.width = paddingX * 2 + photoW;
+    ctx.canvas.height = startY * 2 + H * 4 + gap * 3;
 
-    const img3 = loadedPhotos[2];
-    const W3 = H * (img3.width / img3.height);
-    ctx.drawImage(img3, 50, startY + (H + gap) * 2, W3, H); // y = 1460
+    // Gambar foto dulu
+    ctx.drawImage(loadedPhotos[0], paddingX, startY, photoW, H);
+    ctx.drawImage(loadedPhotos[1], paddingX, startY + (H + gap), photoW, H);
+    ctx.drawImage(loadedPhotos[2], paddingX, startY + (H + gap) * 2, photoW, H);
+    ctx.drawImage(loadedPhotos[3], paddingX, startY + (H + gap) * 3, photoW, H);
 
-    const img4 = loadedPhotos[3];
-    const W4 = H * (img4.width / img4.height);
-    ctx.drawImage(img4, 50, startY + (H + gap) * 3, W4, H); // y = 2170
+    // Gambar layout PNG di atasnya (akan di-scale otomatis)
+    // ctx.drawImage(layoutImg, 0, 0, ctx.canvas.width, ctx.canvas.height);
   }
 }
 
