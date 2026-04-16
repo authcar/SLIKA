@@ -4,26 +4,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const FRAME_DESIGNS = [
     { label: "Floral", src: "./src/assets/frames/frame-floral.png" },
-    { label: "Pastel", src: "./src/assets/frames/frame-pastel.png" },
-    { label: "Vintage", src: "./src/assets/frames/frame-vintage.png" },
-    { label: "Minimal", src: "./src/assets/frames/frame-minimal.png" },
+    { label: "Gradient", src: "./src/assets/frames/frame-gradient.png" },
+    { label: "Kid", src: "./src/assets/frames/frame-grass.png" },
+    { label: "", src: "./src/assets/frames/frame-bp.png" },
   ];
 
-  const saveButton = document.querySelector(
-    'img[src="./src/assets/button save.png"]',
-  );
-  const restartButton = document.querySelector(
-    'img[src="./src/assets/restart button.png"]',
-  );
+  const saveButton = document.getElementById("saveBtn");
+  const restartButton = document.getElementById("restartBtn");
 
   let selectedFrameSrc = null;
   let basePhotoImg = null;
 
   // Ambil foto dari localStorage
   const finalImage = localStorage.getItem("finalPhoto");
+
   if (!finalImage) {
-    console.error("finalPhoto not found in localStorage");
-    alert("Foto tidak ditemukan! Silakan ambil foto terlebih dahulu.");
+    alert("Foto tidak ditemukan! Kembali ke halaman kamera.");
+    window.location.href = "index3.html";
     return;
   }
 
@@ -122,10 +119,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // ============================
   function drawPhotoToCanvas() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    ctx.save(); // simpan state canvas
-    ctx.translate(canvas.width, 0); // geser titik awal ke kanan
-    ctx.scale(-1, 1); // flip horizontal (mirror)
+    ctx.save(); // simpan state canvas// geser titik awal ke kanan
     ctx.drawImage(basePhotoImg, 0, 0, canvas.width, canvas.height); // balikin state biar ga pengaruh gambar lain
     ctx.restore();
   }

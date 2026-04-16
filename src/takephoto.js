@@ -348,6 +348,7 @@ function takePhoto() {
         ctx2.scale(-1, 1);
 
         ctx2.drawImage(source, 0, 0, captureCanvas.width, captureCanvas.height);
+        ctx2.restore();
 
         const imageData = captureCanvas.toDataURL("image/png");
         photos.push(imageData);
@@ -374,42 +375,42 @@ function takePhoto() {
 // FINAL LAYOUT
 // =======================
 async function generateFinalLayout() {
-  console.log("Memulai proses penggabungan foto..."); // Debugging
+  console.log("Memulai proses penggabungan foto...");
   const finalCanvas = document.createElement("canvas");
   const ctx3 = finalCanvas.getContext("2d");
 
-  const layoutImg = new Image();
-  // Pastikan path sesuai dengan struktur folder kamu
-  layoutImg.src = `/assets/${selectedLayout}.png`; //untuk
+  return new Promise((resolve, reject) => {
+    const layoutImg = new Image();
+    layoutImg.src = `/assets/${selectedLayout}.png`;
 
-  layoutImg.onload = async () => {
-    try {
-      // 1. Atur ukuran canvas sesuai ukuran asli file layout.png kamu
-      finalCanvas.width = layoutImg.width;
-      finalCanvas.height = layoutImg.height;
+    layoutImg.onload = async () => {
+      try {
+        finalCanvas.width = layoutImg.width;
+        finalCanvas.height = layoutImg.height;
 
-      // 3. Ambil semua foto dari array dan ubah jadi elemen Image
-      const loadedPhotos = await Promise.all(photos.map((p) => makeImg(p)));
+        const loadedPhotos = await Promise.all(photos.map((p) => makeImg(p)));
 
-      placePhotos(ctx3, selectedLayout, loadedPhotos); // tempatkan foto sesuai layout
+        placePhotos(ctx3, selectedLayout, loadedPhotos);
+        ctx3.drawImage(layoutImg, 0, 0);
 
-      ctx3.drawImage(layoutImg, 0, 0); // untuk menggambar layout di atas foto
+        finalImageData = finalCanvas.toDataURL("image/png");
+        localStorage.setItem("finalPhoto", finalImageData);
 
-      // 5. SELESAI! Simpan hasilnya
-      finalImageData = finalCanvas.toDataURL("image/png");
-      localStorage.setItem("finalPhoto", finalImageData);
+        confirmButton.disabled = false;
+        console.log("Proses selesai! Kamu bisa download sekarang.");
+        resolve();
+      } catch (error) {
+        console.error("Gagal menggambar layout:", error);
+        reject(error);
+      }
+    };
 
-      confirmButton.disabled = false; // Tombol confirm sekarang bisa diklik
-      console.log("Proses selesai! Kamu bisa download sekarang.");
-    } catch (error) {
-      console.error("Gagal menggambar layout:", error);
-    }
-  };
-
-  layoutImg.onerror = () => {
-    console.error("File tidak ditemukan di: " + layoutImg.src);
-    alert("Error: File layout tidak ditemukan. Cek folder assets!");
-  };
+    layoutImg.onerror = () => {
+      console.error("File tidak ditemukan di: " + layoutImg.src);
+      alert("Error: File layout tidak ditemukan. Cek folder assets!");
+      reject(new Error("Layout image not found"));
+    };
+  });
 }
 
 function downloadFinalImage() {
@@ -452,10 +453,8 @@ function placePhotos(ctx, layout, loadedPhotos) {
   }
 
   if (layout === "layout3") {
-    // Sesuai frame-floral.png (1280 x 2880)
-    // Kotak 1: x:78, y:77,  w:1137, h:689
-    // Kotak 2: x:78, y:838, w:1137, h:689
-    // Kotak 3: x:78, y:1600, w:1137, h:689
+    ctx.canvas.width = 1280;
+    ctx.canvas.height = 2880;
 
     const slots = [
       { x: 78, y: 77, w: 1137, h: 689 },
@@ -463,13 +462,24 @@ function placePhotos(ctx, layout, loadedPhotos) {
       { x: 78, y: 1600, w: 1137, h: 689 },
     ];
 
-    // Set canvas sesuai ukuran frame
-    ctx.canvas.width = 1280;
-    ctx.canvas.height = 2880;
-
-    // Gambar foto tepat di tiap slot
     slots.forEach((slot, i) => {
-      ctx.drawImage(loadedPhotos[i], slot.x, slot.y, slot.w, slot.h);
+      const img = loadedPhotos[i];
+
+      // Hitung scale agar foto cover slot (tidak gepeng)
+      const scale = Math.max(slot.w / img.width, slot.h / img.height);
+      const scaledW = img.width * scale;
+      const scaledH = img.height * scale;
+
+      // Crop dari tengah
+      const offsetX = (scaledW - slot.w) / 2;
+      const offsetY = (scaledH - slot.h) / 2;
+
+      ctx.save();
+      ctx.beginPath();
+      ctx.rect(slot.x, slot.y, slot.w, slot.h); // clip area slot
+      ctx.clip();
+      ctx.drawImage(img, slot.x - offsetX, slot.y - offsetY, scaledW, scaledH);
+      ctx.restore();
     });
   }
 
@@ -518,4 +528,17 @@ retakeButton.addEventListener("click", () => {
 
 confirmButton.addEventListener("click", () => {
   downloadFinalImage();
+});
+
+document.getElementById("skipBtn").addEventListener("click", async () => {
+  if (photos.length > 0) {
+    try {
+      await generateFinalLayout();
+    } catch (e) {
+      // Layout gagal, simpan foto pertama sebagai fallback
+      console.warn("Layout gagal, pakai foto pertama:", e);
+      localStorage.setItem("finalPhoto", photos[0]);
+    }
+  }
+  window.location.href = "index4.html";
 });

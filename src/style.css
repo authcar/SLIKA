@@ -362,6 +362,14 @@ canvas {
   z-index: 1000;
 }
 
+#skipBtn {
+  position: fixed;
+  bottom: 80px;
+  right: 40px;
+  cursor: pointer;
+  z-index: 1000;
+}
+
 #retake-button {
   position: absolute;
   bottom: 80px;
@@ -405,30 +413,10 @@ canvas {
   flex-shrink: 0; /* supaya tidak mengecil */
 }
 
-.slider-wrapper {
-  position: absolute;
-  width: 60px; /* sesuaikan */
-  height: 300px; /* tinggi slider */
-}
-
-.slider-track {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  height: 100%;
-  width: 20px; /* atau auto kalau PNG sudah pas */
-  pointer-events: none; /* biar gambar track tidak menghalangi drag */
-}
-
-.slider-thumb {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 60px; /* sesuai gambar kotakmu */
+#finalCanvas {
+  max-width: 100%;
   height: auto;
-  cursor: grab;
+  display: block;
 }
 
 .frame-list {

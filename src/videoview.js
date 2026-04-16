@@ -266,3 +266,5 @@ document.getElementById("nextBtn").addEventListener("click", () => {
   console.log("Saved filter:", currentFilter);
   window.location.href = "index3.html";
 });
+
+
