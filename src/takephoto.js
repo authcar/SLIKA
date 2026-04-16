@@ -344,13 +344,10 @@ function takePhoto() {
         const source = filterActive ? canvas : videoElement;
 
         ctx2.save();
-        ctx2.translate(captureCanvas.width, 0);
-        ctx2.scale(-1, 1);
-
         ctx2.drawImage(source, 0, 0, captureCanvas.width, captureCanvas.height);
         ctx2.restore();
 
-        const imageData = captureCanvas.toDataURL("image/png");
+        const imageData = captureCanvas.toDataURL("image/jpeg", 0.7);
         photos.push(imageData);
 
         const img = new Image();
@@ -385,15 +382,23 @@ async function generateFinalLayout() {
 
     layoutImg.onload = async () => {
       try {
-        finalCanvas.width = layoutImg.width;
-        finalCanvas.height = layoutImg.height;
+        if (selectedLayout === "layout3") {
+          finalCanvas.width = 1280;
+          finalCanvas.height = 2880;
+        } else if (selectedLayout === "layout4") {
+          // layout4 dihandle di placePhotos, biarkan dulu
+          finalCanvas.width = layoutImg.width;
+          finalCanvas.height = layoutImg.height;
+        } else {
+          finalCanvas.width = layoutImg.width;
+          finalCanvas.height = layoutImg.height;
+        }
 
         const loadedPhotos = await Promise.all(photos.map((p) => makeImg(p)));
-
         placePhotos(ctx3, selectedLayout, loadedPhotos);
         ctx3.drawImage(layoutImg, 0, 0);
 
-        finalImageData = finalCanvas.toDataURL("image/png");
+        finalImageData = finalCanvas.toDataURL("image/jpeg", 0.7); // kompres 70%
         localStorage.setItem("finalPhoto", finalImageData);
 
         confirmButton.disabled = false;
@@ -453,8 +458,6 @@ function placePhotos(ctx, layout, loadedPhotos) {
   }
 
   if (layout === "layout3") {
-    ctx.canvas.width = 1280;
-    ctx.canvas.height = 2880;
 
     const slots = [
       { x: 78, y: 77, w: 1137, h: 689 },
@@ -489,7 +492,7 @@ function placePhotos(ctx, layout, loadedPhotos) {
     const startY = 40;
     const H = 670;
 
-    const img1 = loadedPhotos[0];
+    const img1 = loadedPhotos[0]; 
     const photoW = H * (img1.width / img1.height);
 
     // Resize canvas sesuai konten
