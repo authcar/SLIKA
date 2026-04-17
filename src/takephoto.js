@@ -382,7 +382,10 @@ async function generateFinalLayout() {
 
     layoutImg.onload = async () => {
       try {
-        if (selectedLayout === "layout3") {
+        if (selectedLayout === "layout2") {
+          finalCanvas.width = 1280;
+          finalCanvas.height = 2880;
+        } else if (selectedLayout === "layout3") {
           finalCanvas.width = 1280;
           finalCanvas.height = 2880;
         } else if (selectedLayout === "layout4") {
@@ -450,11 +453,13 @@ function placePhotos(ctx, layout, loadedPhotos) {
 
     const img1 = loadedPhotos[0];
     const W1 = H * (img1.width / img1.height);
-    ctx.drawImage(img1, 50, 100, W1, H);
+    const x1 = (ctx.canvas.width - W1) / 2;
+    ctx.drawImage(img1, x1, 100, W1, H);
 
     const img2 = loadedPhotos[1];
     const W2 = H * (img2.width / img2.height);
-    ctx.drawImage(img2, 50, 1300, W2, H);
+    const x2 = (ctx.canvas.width - W2) / 2;
+    ctx.drawImage(img2, x2, 1300, W2, H);
   }
 
   if (layout === "layout3") {

@@ -354,19 +354,24 @@ canvas {
 }
 
 #capture-button {
-  position: absolute;
-  bottom: 80px;
-  left: 50%;
-  transform: translateX(-50%);
   cursor: pointer;
   z-index: 1000;
 }
 
 #skipBtn {
+  cursor: pointer;
+  z-index: 1000;
+}
+
+.bottom-buttons {
   position: fixed;
   bottom: 80px;
-  right: 40px;
-  cursor: pointer;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  align-items: center;
   z-index: 1000;
 }
 

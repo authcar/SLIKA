@@ -2,12 +2,25 @@ document.addEventListener("DOMContentLoaded", () => {
   const canvas = document.getElementById("finalCanvas");
   const ctx = canvas.getContext("2d");
 
-  const FRAME_DESIGNS = [
-    { label: "Floral", src: "./src/assets/frames/frame-floral.png" },
-    { label: "Gradient", src: "./src/assets/frames/frame-gradient.png" },
-    { label: "Kid", src: "./src/assets/frames/frame-grass.png" },
-    { label: "", src: "./src/assets/frames/frame-bp.png" },
-  ];
+  const FRAME_DESIGNS_BY_LAYOUT = {
+    layout2: [
+      { label: "Denim", src: "./src/assets/frames/2/frame-denim.png" },
+      { label: "Grass", src: "./src/assets/frames/2/frame-grass.png" },
+      { label: "Cloud", src: "./src/assets/frames/2/frame-cloud.png" },
+    ],
+    layout3: [
+      { label: "Gradient", src: "./src/assets/frames/frame-gradient.png" },
+      { label: "Grass", src: "./src/assets/frames/frame-grass.png" },
+      { label: "BP", src: "./src/assets/frames/frame-bp.png" },
+      { label: "Star", src: "./src/assets/frames/frame-star.png" },
+    ],
+    layout4: [
+      { label: "Grass", src: "./src/assets/frames/frame-grass.png" },
+    ],
+  };
+
+  const selectedLayout = localStorage.getItem("selectedLayout") || "layout2";
+  const FRAME_DESIGNS = FRAME_DESIGNS_BY_LAYOUT[selectedLayout] ?? FRAME_DESIGNS_BY_LAYOUT["layout2"];
 
   const saveButton = document.getElementById("saveBtn");
   const restartButton = document.getElementById("restartBtn");
