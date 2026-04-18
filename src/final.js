@@ -15,7 +15,9 @@ document.addEventListener("DOMContentLoaded", () => {
       { label: "Star", src: "./src/assets/frames/frame-star.png" },
     ],
     layout4: [
-      { label: "Grass", src: "./src/assets/frames/frame-grass.png" },
+      { label: "Leopard", src: "./src/assets/frames/4/frame-leopard.png" },
+      { label: "Cloud", src: "./src/assets/frames/4/frame-cloud.png" },
+      { label: "Chocolate Mint", src: "./src/assets/frames/4/frame-mint.png" },
     ],
   };
 
@@ -81,8 +83,25 @@ document.addEventListener("DOMContentLoaded", () => {
         flex-direction: column;
         align-items: center;
         cursor: pointer;
-        gap: 4px;
+        gap: 8px;
+        padding: 12px 10px 10px;
+        border-radius: 16px;
+        background: linear-gradient(145deg, rgba(255,182,217,0.35), rgba(255,255,255,0.15));
+        border: 2px solid rgba(255,255,255,0.4);
+        backdrop-filter: blur(6px);
+        box-shadow: 0 4px 15px rgba(255, 105, 180, 0.2), inset 0 1px 0 rgba(255,255,255,0.5);
+        transition: transform 0.2s, box-shadow 0.2s;
+        min-width: 90px;
       `;
+
+      wrapper.addEventListener("mouseenter", () => {
+        wrapper.style.transform = "translateY(-4px)";
+        wrapper.style.boxShadow = "0 8px 25px rgba(255, 105, 180, 0.4), inset 0 1px 0 rgba(255,255,255,0.5)";
+      });
+      wrapper.addEventListener("mouseleave", () => {
+        wrapper.style.transform = "translateY(0)";
+        wrapper.style.boxShadow = "0 4px 15px rgba(255, 105, 180, 0.2), inset 0 1px 0 rgba(255,255,255,0.5)";
+      });
 
       const thumb = document.createElement("img");
       thumb.src = src;
@@ -91,9 +110,10 @@ document.addEventListener("DOMContentLoaded", () => {
         width: 70px;
         height: 70px;
         object-fit: cover;
-        border-radius: 8px;
+        border-radius: 10px;
         border: 3px solid transparent;
         transition: border-color 0.2s, transform 0.15s;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.15);
       `;
 
       const lbl = document.createElement("span");
@@ -102,6 +122,9 @@ document.addEventListener("DOMContentLoaded", () => {
         font-size: 11px;
         color: #fff;
         font-family: sans-serif;
+        font-weight: 600;
+        text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+        letter-spacing: 0.5px;
       `;
 
       wrapper.appendChild(thumb);
@@ -113,10 +136,16 @@ document.addEventListener("DOMContentLoaded", () => {
           img.style.borderColor = "transparent";
           img.style.transform = "scale(1)";
         });
+        pickerContainer.querySelectorAll("div").forEach((div) => {
+          div.style.background = "linear-gradient(145deg, rgba(255,182,217,0.35), rgba(255,255,255,0.15))";
+          div.style.borderColor = "rgba(255,255,255,0.4)";
+        });
 
         // Tandai yang dipilih
         thumb.style.borderColor = "#ff85b3";
         thumb.style.transform = "scale(1.08)";
+        wrapper.style.background = "linear-gradient(145deg, rgba(255,105,180,0.5), rgba(255,182,217,0.3))";
+        wrapper.style.borderColor = "#ff85b3";
 
         selectedFrameSrc = src;
         drawPhotoWithFrame();

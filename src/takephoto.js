@@ -13,9 +13,11 @@ const captureCanvas = document.getElementById("captureCanvas");
 const capture = document.getElementById("capture-button");
 const retakeButton = document.getElementById("retake-button");
 const confirmButton = document.getElementById("confirm-button");
+const skipbtn = document.getElementById("skipBtn")
 
 retakeButton.style.display = "none";
 confirmButton.style.display = "none";
+skipbtn.style.display = "none";
 
 // =======================
 // GLOBAL STATES
@@ -317,6 +319,7 @@ function startPhotoSequence() {
   if (isTakingPhotos) return;
   isTakingPhotos = true;
   capture.disabled = true;
+  capture.style.display = "none";
   takePhoto();
 }
 
@@ -361,6 +364,7 @@ function takePhoto() {
           generateFinalLayout();
           retakeButton.style.display = "block";
           confirmButton.style.display = "block";
+          skipbtn.style.display = "block";
           capture.style.display = "none";
         }
       }, 300);
@@ -529,6 +533,7 @@ retakeButton.addEventListener("click", () => {
   imagecontainer.innerHTML = "";
   retakeButton.style.display = "none";
   confirmButton.style.display = "none";
+  skipbtn.style.display = "none";
   capture.style.display = "block";
   isTakingPhotos = false;
   capture.disabled = false;

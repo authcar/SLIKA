@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="/src/style.css" />
     <link rel="icon" href="/src/assets/icooon.png" type="image/png" />
     <style>
-      /* ── Two-column final page layout ── */
       .final-layout {
         position: absolute;
         top: 0; left: 0;
@@ -15,8 +14,8 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        gap: 40px;
-        padding: 80px 40px 20px;
+        gap: 48px;
+        padding: 90px 60px 30px;
         box-sizing: border-box;
         z-index: 1;
       }
@@ -25,93 +24,79 @@
       .final-canvas-col {
         flex: 0 0 auto;
         display: flex;
+        flex-direction: column;
         align-items: center;
-        justify-content: center;
+        gap: 12px;
       }
 
       #finalCanvas {
         display: block;
         width: auto;
-        height: calc(100vh - 120px);
-        max-height: 700px;
-        max-width: 340px;
-        border-radius: 12px;
-        box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+        height: calc(100vh - 140px);
+        max-height: 580px;
+        max-width: 260px;
+        border-radius: 16px;
+        box-shadow: 0 8px 40px rgba(255, 105, 180, 0.35), 0 2px 12px rgba(0,0,0,0.2);
+        border: 3px solid rgba(255,255,255,0.5);
       }
 
       /* RIGHT: controls column */
       .final-controls-col {
-        flex: 0 0 220px;
+        flex: 0 0 240px;
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 20px;
+        gap: 24px;
+      }
+
+      /* Frame label */
+      .frame-section-label {
+        width: 130px;
+        filter: drop-shadow(0 2px 6px rgba(255,105,180,0.4));
       }
 
       /* Frame picker container */
       #frame-picker {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 10px;
+        gap: 12px;
         width: 100%;
-      }
-
-      #frame-picker .frame-thumb-wrapper {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        cursor: pointer;
-        gap: 4px;
-      }
-
-      #frame-picker .frame-thumb-wrapper img {
-        width: 85px;
-        height: 85px;
-        object-fit: cover;
-        border-radius: 10px;
-        border: 3px solid transparent;
-        transition: border-color 0.2s, transform 0.15s;
-      }
-
-      #frame-picker .frame-thumb-wrapper img.selected,
-      #frame-picker .frame-thumb-wrapper img:hover {
-        border-color: #ff85b3;
-        transform: scale(1.06);
-      }
-
-      #frame-picker .frame-thumb-wrapper span {
-        font-size: 11px;
-        color: #fff;
-        font-family: sans-serif;
-        text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+        padding: 16px;
+        background: rgba(255,255,255,0.12);
+        border-radius: 20px;
+        border: 1.5px solid rgba(255,255,255,0.3);
+        backdrop-filter: blur(8px);
+        box-shadow: 0 4px 20px rgba(255,105,180,0.15);
+        box-sizing: border-box;
       }
 
       /* Buttons row */
       .final-buttons {
         display: flex;
         flex-direction: column;
-        gap: 10px;
+        gap: 12px;
         align-items: center;
         width: 100%;
       }
 
       .final-buttons img {
-        width: 130px;
+        width: 140px;
         transition: transform 0.2s, filter 0.2s;
         cursor: pointer;
+        filter: drop-shadow(0 2px 8px rgba(255,105,180,0.3));
       }
 
       .final-buttons img:hover {
         transform: scale(1.08);
-        filter: drop-shadow(0 0 10px rgba(255,133,179,0.7));
+        filter: drop-shadow(0 0 14px rgba(255,133,179,0.8));
       }
 
       .final-buttons img.disabled {
         opacity: 0.45;
         pointer-events: none;
         cursor: not-allowed;
+        filter: none;
       }
-
     </style>
   </head>
   <body class="relative">
@@ -139,35 +124,26 @@
     <!-- Garis dekoratif -->
     <img class="absolute w-full object-cover z-0" src="./src/assets/garis.png" alt="garis" />
 
+
     <!-- ── MAIN TWO-COLUMN LAYOUT ── -->
     <div class="final-layout">
 
       <!-- LEFT: canvas -->
       <div class="final-canvas-col">
-        <div style="display:flex;flex-direction:column;align-items:center;gap:10px;">
-          <canvas id="finalCanvas" width="1080" height="1350"></canvas>
-          <!-- Sticker list di bawah canvas -->
-        </div>
+        <canvas id="finalCanvas" width="1080" height="1350"></canvas>
       </div>
 
       <!-- RIGHT: controls -->
       <div class="final-controls-col">
-        <!-- Frame picker akan di-inject oleh final.js di sini -->
+        <img src="./src/assets/Filters.png" class="frame-section-label" alt="Frames" />
+
+        <!-- Frame picker di-inject oleh final.js -->
         <div id="frame-picker"></div>
 
         <!-- Buttons -->
         <div class="final-buttons">
-          <img
-            id="saveBtn"
-            src="./src/assets/button save.png"
-            alt="Save"
-            class="disabled"
-          />
-          <img
-            id="restartBtn"
-            src="./src/assets/restart button.png"
-            alt="Restart"
-          />
+          <img id="saveBtn" src="./src/assets/button save.png" alt="Save" class="disabled" />
+          <img id="restartBtn" src="./src/assets/restart button.png" alt="Restart" />
         </div>
       </div>
 

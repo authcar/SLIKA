@@ -61,6 +61,7 @@
 
       <div class="konten">
         <div class="frame-wrapper">
+          <div class="kont">
           <img src="./src/assets/frame.png" class="frame" alt="frame" />
           <div id="photobooth-frame">
             <video id="videoview" autoplay playsinline></video>
@@ -74,34 +75,34 @@
               style="display: none"
             ></canvas>
           </div>
+          </div>
         </div>
-        <div class="bottom-buttons">
+        <div class="button-group">
           <img
             id="capture-button"
             class="buttonfilter-ui"
             src="./src/assets/take.png"
+          />
+          <img
+            id="skipBtn"
+            src="./src/assets/next.png"
+            class="buttonfilter-ui"
             style="width: 120px; cursor: pointer"
           />
           <img
-            src="./src/assets/next.png"
+            id="retake-button"
             class="buttonfilter-ui"
-            id="skipBtn"
+            src="./src/assets/button retake.png"
+            style="width: 120px; cursor: pointer"
+          />
+          <img
+            id="confirm-button"
+            class="buttonfilter-ui"
+            src="./src/assets/button save.png"
+            alt="Confirm"
             style="width: 120px; cursor: pointer"
           />
         </div>
-        <img
-          id="retake-button"
-          class="buttonfilter-ui"
-          src="./src/assets/button retake.png"
-          style="width: 120px; cursor: pointer"
-        />
-        <img
-          id="confirm-button"
-          class="buttonfilter-ui"
-          src="./src/assets/button save.png"
-          alt="Confirm"
-          style="width: 120px; cursor: pointer"
-        />
         <section id="images-container"></section>
         <!-- menampilkan preview foto-foto yang sudah diambil sebelum jadi layout final. -->
       </div>
