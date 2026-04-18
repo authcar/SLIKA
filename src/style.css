@@ -458,8 +458,8 @@ select,
 }
 
 #images-container img {
-  width: 220px;
-  height: auto;      /* biar tidak gepeng */
+  width: 200px;
+  height: auto;
   border-radius: 10px;
   margin: 5px;
 }

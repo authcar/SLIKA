@@ -9,10 +9,17 @@ document.addEventListener("DOMContentLoaded", () => {
       { label: "Cloud", src: "./src/assets/frames/2/frame-cloud.png" },
     ],
     layout3: [
-      { label: "Gradient", src: "./src/assets/frames/frame-gradient.png" },
-      { label: "Grass", src: "./src/assets/frames/frame-grass.png" },
-      { label: "BP", src: "./src/assets/frames/frame-bp.png" },
-      { label: "Star", src: "./src/assets/frames/frame-star.png" },
+      { label: "Grass", src: "./src/assets/frames/3/frame-grass.png" },
+      { label: "Star", src: "./src/assets/frames/3/frame-star.png" },
+      { label: "Denim", src: "./src/assets/frames/3/frame-denim.png" },
+      { label: "Floral", src: "./src/assets/frames/3/frame-floral.png" },
+      { label: "Blue", src: "./src/assets/frames/3/frame-blue.png" },
+      { label: "Cloud", src: "./src/assets/frames/3/frame-cloud.png" },
+      { label: "Chocolate Mint", src: "./src/assets/frames/3/frame-mint.png" },
+      { label: "Candy", src: "./src/assets/frames/3/frame-stripes.png" },
+      { label: "Gingham", src: "./src/assets/frames/3/frame-gingham.png" },
+      { label: "Polkadot", src: "./src/assets/frames/3/frame-polka.png" },
+      { label: "Ice Cream", src: "./src/assets/frames/3/frame-cream.png" },
     ],
     layout4: [
       { label: "Leopard", src: "./src/assets/frames/4/frame-leopard.png" },
@@ -22,7 +29,9 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   const selectedLayout = localStorage.getItem("selectedLayout") || "layout2";
-  const FRAME_DESIGNS = FRAME_DESIGNS_BY_LAYOUT[selectedLayout] ?? FRAME_DESIGNS_BY_LAYOUT["layout2"];
+  const FRAME_DESIGNS =
+    FRAME_DESIGNS_BY_LAYOUT[selectedLayout] ??
+    FRAME_DESIGNS_BY_LAYOUT["layout2"];
 
   const saveButton = document.getElementById("saveBtn");
   const restartButton = document.getElementById("restartBtn");
@@ -83,34 +92,36 @@ document.addEventListener("DOMContentLoaded", () => {
         flex-direction: column;
         align-items: center;
         cursor: pointer;
-        gap: 8px;
-        padding: 12px 10px 10px;
-        border-radius: 16px;
+        gap: 5px;
+        padding: 8px 6px 7px;
+        border-radius: 12px;
         background: linear-gradient(145deg, rgba(255,182,217,0.35), rgba(255,255,255,0.15));
         border: 2px solid rgba(255,255,255,0.4);
         backdrop-filter: blur(6px);
         box-shadow: 0 4px 15px rgba(255, 105, 180, 0.2), inset 0 1px 0 rgba(255,255,255,0.5);
         transition: transform 0.2s, box-shadow 0.2s;
-        min-width: 90px;
+        min-width: 70px;
       `;
 
       wrapper.addEventListener("mouseenter", () => {
         wrapper.style.transform = "translateY(-4px)";
-        wrapper.style.boxShadow = "0 8px 25px rgba(255, 105, 180, 0.4), inset 0 1px 0 rgba(255,255,255,0.5)";
+        wrapper.style.boxShadow =
+          "0 8px 25px rgba(255, 105, 180, 0.4), inset 0 1px 0 rgba(255,255,255,0.5)";
       });
       wrapper.addEventListener("mouseleave", () => {
         wrapper.style.transform = "translateY(0)";
-        wrapper.style.boxShadow = "0 4px 15px rgba(255, 105, 180, 0.2), inset 0 1px 0 rgba(255,255,255,0.5)";
+        wrapper.style.boxShadow =
+          "0 4px 15px rgba(255, 105, 180, 0.2), inset 0 1px 0 rgba(255,255,255,0.5)";
       });
 
       const thumb = document.createElement("img");
       thumb.src = src;
       thumb.alt = label;
       thumb.style.cssText = `
-        width: 70px;
-        height: 70px;
+        width: 55px;
+        height: 55px;
         object-fit: cover;
-        border-radius: 10px;
+        border-radius: 8px;
         border: 3px solid transparent;
         transition: border-color 0.2s, transform 0.15s;
         box-shadow: 0 2px 8px rgba(0,0,0,0.15);
@@ -137,14 +148,16 @@ document.addEventListener("DOMContentLoaded", () => {
           img.style.transform = "scale(1)";
         });
         pickerContainer.querySelectorAll("div").forEach((div) => {
-          div.style.background = "linear-gradient(145deg, rgba(255,182,217,0.35), rgba(255,255,255,0.15))";
+          div.style.background =
+            "linear-gradient(145deg, rgba(255,182,217,0.35), rgba(255,255,255,0.15))";
           div.style.borderColor = "rgba(255,255,255,0.4)";
         });
 
         // Tandai yang dipilih
         thumb.style.borderColor = "#ff85b3";
         thumb.style.transform = "scale(1.08)";
-        wrapper.style.background = "linear-gradient(145deg, rgba(255,105,180,0.5), rgba(255,182,217,0.3))";
+        wrapper.style.background =
+          "linear-gradient(145deg, rgba(255,105,180,0.5), rgba(255,182,217,0.3))";
         wrapper.style.borderColor = "#ff85b3";
 
         selectedFrameSrc = src;
