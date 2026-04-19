@@ -353,38 +353,29 @@ select,
   z-index: 999;
 }
 
-#capture-button {
-  position: absolute;
-  justify-content: center;
+.bottom-buttons {
+  position: fixed;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
   align-items: center;
   z-index: 1000;
-  width: 400px; /* ganti sesuai selera */
 }
 
-#skipBtn {
-  position: absolute;
-  bottom: 85px;
-  right: 840px;
-  cursor: pointer;
-  z-index: 1000;
-}
-
-
-#retake-button {
-  position: absolute;
-  bottom: 80px;
-  left: 300px;
-  cursor: pointer;
-  z-index: 1000;
-}
-
+#capture-button,
+#skipBtn,
+#retake-button,
 #confirm-button {
-  position: absolute;
-  bottom: 80px;
-  right: 980px;
   cursor: pointer;
   z-index: 1000;
-  
+  width: 120px;
+  position: relative;
+  bottom: auto;
+  left: auto;
+  right: auto;
 }
 
 .kont {

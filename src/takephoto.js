@@ -347,6 +347,8 @@ function takePhoto() {
         const source = filterActive ? canvas : videoElement;
 
         ctx2.save();
+        ctx2.translate(captureCanvas.width, 0);
+        ctx2.scale(-1, 1);
         ctx2.drawImage(source, 0, 0, captureCanvas.width, captureCanvas.height);
         ctx2.restore();
 
