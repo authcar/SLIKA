@@ -3,9 +3,9 @@
 module.exports = {
   content: [
     "./index.html",
-    "./index2.html",
-    "./index3.html",
-    "./index4.html",
+    "./filter.html",
+    "./room.html",
+    "./frame.html",
     "./src/**/*.{js,ts,jsx,tsx,vue,svelte}",
   ],
   theme: {

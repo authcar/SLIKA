@@ -58,7 +58,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (!finalImage) {
     alert("Foto tidak ditemukan! Kembali ke halaman kamera.");
-    window.location.href = "index3.html";
+    window.location.href = "room.html";
     return;
   }
 

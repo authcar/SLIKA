@@ -264,7 +264,7 @@ function applyDreamy(data) {
 document.getElementById("nextBtn").addEventListener("click", () => {
   localStorage.setItem("currentFilter", currentFilter);
   console.log("Saved filter:", currentFilter);
-  window.location.href = "index3.html";
+  window.location.href = "room.html";
 });
 
 

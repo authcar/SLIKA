@@ -555,5 +555,5 @@ document.getElementById("skipBtn").addEventListener("click", async () => {
       localStorage.setItem("finalPhoto", photos[0]);
     }
   }
-  window.location.href = "index4.html";
+  window.location.href = "frame.html";
 });

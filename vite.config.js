@@ -8,9 +8,9 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: resolve(__dirname, "index.html"),
-        page2: resolve(__dirname, "index2.html"),
-        page3: resolve(__dirname, "index3.html"),
-        page4: resolve(__dirname, "index4.html"),
+        page2: resolve(__dirname, "filter.html"),
+        page3: resolve(__dirname, "room.html"),
+        page4: resolve(__dirname, "frame.html"),
       },
     },
   },
