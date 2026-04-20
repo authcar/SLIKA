@@ -4,41 +4,41 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const FRAME_DESIGNS_BY_LAYOUT = {
     layout2: [
-      { label: "Denim", src: "/assets/frames/2/frame-denim.png" },
-      { label: "Grass", src: "/assets/frames/2/frame-grass.png" },
-      { label: "Cloud", src: "/assets/frames/2/frame-cloud.png" },
-      { label: "Chocolate Mint", src: "/assets/frames/2/frame-mint.png" },
-      { label: "Star", src: "/assets/frames/2/frame-purplestar.png" },
-      { label: "Red Polka", src: "/assets/frames/2/frame-red-polka.png" },
-      { label: "Aero", src: "/assets/frames/2/frame-blue.png" },
-      { label: "Pink Polka", src: "/assets/frames/2/frame-pink-polka.png" },
-      { label: "Gingham", src: "/assets/frames/2/frame-gingham.png" },
-      { label: "Ice Cream", src: "/assets/frames/2/frame-icecream.png" },
+      { label: "Denim", src: "/assets/frames/2/frame-denim.webp" },
+      { label: "Grass", src: "/assets/frames/2/frame-grass.webp" },
+      { label: "Cloud", src: "/assets/frames/2/frame-cloud.webp" },
+      { label: "Chocolate Mint", src: "/assets/frames/2/frame-mint.webp" },
+      { label: "Star", src: "/assets/frames/2/frame-purplestar.webp" },
+      { label: "Red Polka", src: "/assets/frames/2/frame-red-polka.webp" },
+      { label: "Aero", src: "/assets/frames/2/frame-blue.webp" },
+      { label: "Pink Polka", src: "/assets/frames/2/frame-pink-polka.webp" },
+      { label: "Gingham", src: "/assets/frames/2/frame-gingham.webp" },
+      { label: "Ice Cream", src: "/assets/frames/2/frame-icecream.webp" },
     ],
     layout3: [
-      { label: "Grass", src: "/assets/frames/3/frame-grass.png" },
-      { label: "Star", src: "/assets/frames/3/frame-star.png" },
-      { label: "Denim", src: "/assets/frames/3/frame-denim.png" },
-      { label: "Red Polka", src: "/assets/frames/3/frame-floral.png" },
-      { label: "Aero", src: "/assets/frames/3/frame-blue.png" },
-      { label: "Cloud", src: "/assets/frames/3/frame-cloud.png" },
-      { label: "Chocolate Mint", src: "/assets/frames/3/frame-mint.png" },
-      { label: "Candy", src: "/assets/frames/3/frame-stripes.png" },
-      { label: "Gingham", src: "/assets/frames/3/frame-gingham.png" },
-      { label: "Pink Polka", src: "/assets/frames/3/frame-polka.png" },
-      { label: "Ice Cream", src: "/assets/frames/3/frame-cream.png" },
+      { label: "Grass", src: "/assets/frames/3/frame-grass.webp" },
+      { label: "Star", src: "/assets/frames/3/frame-star.webp" },
+      { label: "Denim", src: "/assets/frames/3/frame-denim.webp" },
+      { label: "Red Polka", src: "/assets/frames/3/frame-floral.webp" },
+      { label: "Aero", src: "/assets/frames/3/frame-blue.webp" },
+      { label: "Cloud", src: "/assets/frames/3/frame-cloud.webp" },
+      { label: "Chocolate Mint", src: "/assets/frames/3/frame-mint.webp" },
+      { label: "Candy", src: "/assets/frames/3/frame-stripes.webp" },
+      { label: "Gingham", src: "/assets/frames/3/frame-gingham.webp" },
+      { label: "Pink Polka", src: "/assets/frames/3/frame-polka.webp" },
+      { label: "Ice Cream", src: "/assets/frames/3/frame-cream.webp" },
     ],
     layout4: [
-      { label: "Leopard", src: "/assets/frames/4/frame-leopard.png" },
-      { label: "Cloud", src: "/assets/frames/4/frame-cloud.png" },
-      { label: "Chocolate Mint", src: "/assets/frames/4/frame-mint.png" },
-      { label: "Denim", src: "/assets/frames/4/frame-denim.png" },
-      { label: "Star", src: "/assets/frames/4/frame-star.png" },
-      { label: "Red Polka", src: "/assets/frames/4/frame-red-polka.png" },
-      { label: "Pink Polka", src: "/assets/frames/4/frame-pink-polka.png" },
-      { label: "Gingham", src: "/assets/frames/4/frame-gingham.png" },
-      { label: "Ice Cream", src: "/assets/frames/4/frame-cream.png" },
-      { label: "Grass", src: "/assets/frames/4/frame-grass.png" },
+      { label: "Leopard", src: "/assets/frames/4/frame-leopard.webp" },
+      { label: "Cloud", src: "/assets/frames/4/frame-cloud.webp" },
+      { label: "Chocolate Mint", src: "/assets/frames/4/frame-mint.webp" },
+      { label: "Denim", src: "/assets/frames/4/frame-denim.webp" },
+      { label: "Star", src: "/assets/frames/4/frame-star.webp" },
+      { label: "Red Polka", src: "/assets/frames/4/frame-red-polka.webp" },
+      { label: "Pink Polka", src: "/assets/frames/4/frame-pink-polka.webp" },
+      { label: "Gingham", src: "/assets/frames/4/frame-gingham.webp" },
+      { label: "Ice Cream", src: "/assets/frames/4/frame-cream.webp" },
+      { label: "Grass", src: "/assets/frames/4/frame-grass.webp" },
     ],
   };
 
@@ -244,7 +244,13 @@ document.addEventListener("DOMContentLoaded", () => {
       const finalResult = canvas.toDataURL("image/png");
       const link = document.createElement("a");
       link.href = finalResult;
-      link.download = `slika-photobooth-${Date.now()}.png`;
+
+      let count = localStorage.getItem("photoCount") || 0;
+      count++;
+
+      localStorage.setItem("photoCount", count);
+
+      link.download = `slika-photobooth - ${count}.png`;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
